@@ -1,4 +1,5 @@
 *.class
+target/
 
 # IntelliJ project files
 .idea
