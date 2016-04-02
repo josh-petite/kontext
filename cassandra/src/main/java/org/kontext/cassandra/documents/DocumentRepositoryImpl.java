@@ -72,7 +72,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
         ResultSet results = session.execute(select);
 
         for (Row row : results) {
-            System.out.format("%s %s\n", row.getUUID("id"), row.getTimestamp("created_date"));
+            System.out.format("%s %s\n", row.getUUID("id"), row.getTimestamp("create_date"));
         }
     }
 

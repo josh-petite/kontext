@@ -6,6 +6,7 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.cass
 import java.io.Closeable;
 import java.io.IOException;
 
+import com.google.inject.Inject;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.kontext.data.DataSourceManager;
@@ -14,14 +15,10 @@ import com.datastax.driver.core.Cluster;
 
 public class CassandraManager implements DataSourceManager {
 
-	private static CassandraManager INSTANCE = new CassandraManager();
+	@Inject
+	public CassandraManager() {
+	}
 
-	private CassandraManager() {
-	}
-	
-	public static CassandraManager getInstance() {
-		return INSTANCE;
-	}
 
 	@Override
 	public Closeable getConnection() {

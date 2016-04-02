@@ -5,6 +5,7 @@ import com.google.inject.Guice;
 import com.google.inject.Injector;
 
 import org.kontext.cassandra.documents.DocumentRepository;
+import org.kontext.cassandra.modules.DataSourceManagerModule;
 import org.kontext.cassandra.modules.DocumentRepositoryModule;
 import org.kontext.common.modules.PropertiesRepositoryModule;
 import org.kontext.crawler.Controller;
@@ -18,6 +19,7 @@ public class App {
         modules.add(new PropertiesRepositoryModule());
         modules.add(new DocumentRepositoryModule());
         modules.add(new ControllerModule());
+        modules.add(new DataSourceManagerModule());
 
         Injector injector = Guice.createInjector(modules);
         DocumentRepository documentRepository = injector.getInstance(DocumentRepository.class);
