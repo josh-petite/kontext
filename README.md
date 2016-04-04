@@ -28,6 +28,7 @@ To explore machine learning and its uses with interpreting documents / articles 
 
 - Trello (https://trello.com/b/NHBPMMpk/kontext)
 - Slack (https://kontext-team.slack.com)
+- Cassandra Setup (http://www.unixmen.com/setup-apache-cassandra-nosql-database-ubuntu-15-04/)
 
 ## License
 
