@@ -13,6 +13,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
     private String documentsKeyspace;
     private String documentsTable;
+    private PreparedStatement storeDocumentStatement;
 
     @Inject
     public DocumentRepositoryImpl(PropertiesRepository propertiesRepository) {
@@ -29,6 +30,9 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
         ensureKeyspaceExistence();
         ensureDocumentTableExistence();
+
+        String cqlMask = "INSERT INTO %s (id, html, raw_text, link_count, create_date) VALUES (?, ?, ?, ?, toTimestamp(now()));";
+        storeDocumentStatement = session.prepare(String.format(cqlMask, documentsTable));
     }
 
     private void ensureDocumentTableExistence() {
@@ -51,10 +55,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     public void storeDocument(String html, String text, int linkCount) {
-        String cqlMask = "INSERT INTO %s (id, html, raw_text, link_count, create_date) VALUES (?, ?, ?, ?, toTimestamp(now()));";
-        PreparedStatement statement = session.prepare(String.format(cqlMask, documentsTable));
-        BoundStatement boundStatement = new BoundStatement(statement);
-
+        BoundStatement boundStatement = new BoundStatement(storeDocumentStatement);
         session.execute(boundStatement.bind(UUID.randomUUID(), html, text, linkCount));
     }
 

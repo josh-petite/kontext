@@ -19,17 +19,17 @@ public class App {
         modules.add(new ControllerModule());
 
         Injector injector = Guice.createInjector(modules);
-        DocumentRepository repository = injector.getInstance(DocumentRepository.class);
+        DocumentRepository documentRepository = injector.getInstance(DocumentRepository.class);
 
         try {
-            repository.init();
+            documentRepository.init();
             Controller c = injector.getInstance(Controller.class);
             c.start();
         } catch (Exception e) {
             e.printStackTrace();
         }
 
-        repository.read();
-        repository.purge();
+        documentRepository.read();
+        documentRepository.purge();
     }
 }

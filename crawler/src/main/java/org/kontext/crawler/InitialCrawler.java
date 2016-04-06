@@ -1,16 +1,38 @@
 package org.kontext.crawler;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
-
+import org.kontext.cassandra.DocumentRepository;
+import org.kontext.cassandra.modules.DocumentRepositoryModule;
+import org.kontext.common.modules.PropertiesRepositoryModule;
+import java.util.ArrayList;
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class InitialCrawler extends WebCrawler {
     private final static Pattern FILTERS =
-            Pattern.compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz))$");
+            Pattern.compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz|php))$");
+
+    private DocumentRepository documentRepository;
+
+    public InitialCrawler() {
+        // this is AMAZINGLY GROSS, but due to the way this crawler works I have no choice
+        // adding anything to the constructor makes its built in factory explode which offers me no chance
+        // to inject any dependencies. this is a testing nightmare as well as just very annoying
+        // I'd rather do this in the runner instead of here, but there is no other hook sadly
+        // we should look at another crawler or write our own
+        ArrayList<AbstractModule> modules = new ArrayList<>();
+        modules.add(new PropertiesRepositoryModule());
+        modules.add(new DocumentRepositoryModule());
+        Injector injector = Guice.createInjector(modules);
+        documentRepository = injector.getInstance(DocumentRepository.class);
+        documentRepository.init();
+    }
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -47,6 +69,8 @@ public class InitialCrawler extends WebCrawler {
             System.out.println("Text length: " + text.length());
             System.out.println("Html length: " + html.length());
             System.out.println("Number of outgoing links: " + links.size());
+
+            documentRepository.storeDocument(html, text, links.size());
         }
     }
 }
