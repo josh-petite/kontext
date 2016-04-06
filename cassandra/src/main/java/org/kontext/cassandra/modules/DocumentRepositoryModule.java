@@ -1,4 +1,4 @@
-package org.kontext.cassandra.Modules;
+package org.kontext.cassandra.modules;
 
 import com.google.inject.AbstractModule;
 import org.kontext.cassandra.DocumentRepository;

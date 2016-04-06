@@ -4,17 +4,13 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import java.util.Set;
 import java.util.regex.Pattern;
 
 public class InitialCrawler extends WebCrawler {
-    private static final Logger logger = LoggerFactory.getLogger(Controller.class);
-
-    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg"
-            + "|png|mp3|mp3|zip|gz))$");
+    private final static Pattern FILTERS =
+            Pattern.compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz))$");
 
     /**
      * This method receives two parameters. The first parameter is the page
@@ -29,8 +25,8 @@ public class InitialCrawler extends WebCrawler {
     @Override
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
-        return !FILTERS.matcher(href).matches()
-                && href.startsWith("http://en.wikipedia.org/");
+        return !FILTERS.matcher(href).matches();
+//                && href.startsWith("http://en.wikipedia.org");
     }
 
     /**

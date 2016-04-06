@@ -1,8 +1,8 @@
-package org.kontext.cassandra.Modules;
+package org.kontext.common.modules;
 
 import com.google.inject.AbstractModule;
-import org.kontext.cassandra.PropertiesRepository;
-import org.kontext.cassandra.PropertiesRepositoryImpl;
+import org.kontext.common.repositories.PropertiesRepository;
+import org.kontext.common.repositories.PropertiesRepositoryImpl;
 
 public class PropertiesRepositoryModule extends AbstractModule {
     @Override

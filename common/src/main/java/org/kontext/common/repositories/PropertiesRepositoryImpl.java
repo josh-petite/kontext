@@ -1,4 +1,4 @@
-package org.kontext.cassandra;
+package org.kontext.common.repositories;
 
 import java.io.*;
 import java.util.Properties;
@@ -6,9 +6,9 @@ import java.util.Properties;
 public class PropertiesRepositoryImpl implements PropertiesRepository {
     private final String configTarget = "config/config.properties";
 
-    private Properties properties;
+    private Properties properties = null;
 
-    public void load() {
+    private void load() {
         File config = new File(configTarget);
         if (!config.exists()) {
             try {
@@ -43,15 +43,24 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
         }
     }
 
+    private void ensurePropertiesArePopulated() {
+        if (properties == null) {
+            load();
+        }
+    }
+
     public String read(String key) {
+        ensurePropertiesArePopulated();
         return properties.getProperty(key);
     }
 
     public void write(String key, String value) {
+        ensurePropertiesArePopulated();
         properties.setProperty(key, value);
     }
 
     public void save() throws IOException {
+        ensurePropertiesArePopulated();
         FileOutputStream out = new FileOutputStream(configTarget);
         properties.store(out, "Properties updated");
         out.close();

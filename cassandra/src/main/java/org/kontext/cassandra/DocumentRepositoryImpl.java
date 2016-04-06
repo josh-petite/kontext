@@ -3,6 +3,7 @@ package org.kontext.cassandra;
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.google.inject.Inject;
+import org.kontext.common.repositories.PropertiesRepository;
 
 import java.util.UUID;
 
@@ -19,7 +20,6 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     public void init() {
-        propertiesRepository.load();
         documentsKeyspace = propertiesRepository.read("cassandra_keyspace");
         documentsTable = propertiesRepository.read("cassandra_document_table");
 
@@ -41,7 +41,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     private void ensureKeyspaceExistence() {
-        String cqlMask = "CREATE KEYSPACE IF NOT EXISTS %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1}";
+        String cqlMask = "CREATE KEYSPACE IF NOT EXISTS %s WITH replication = {'class': 'SimpleStrategy', 'replication_factor' : 1};";
 
         PreparedStatement statement = session.prepare(String.format(cqlMask, documentsKeyspace));
         BoundStatement boundStatement = new BoundStatement(statement);
@@ -71,9 +71,9 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     public void purge() {
-        PreparedStatement statement = session.prepare(String.format("DELETE FROM %s", documentsTable));
+        PreparedStatement statement = session.prepare(String.format("TRUNCATE %s;", documentsTable));
         BoundStatement boundStatement = new BoundStatement(statement);
 
-        session.execute(boundStatement.bind("Josh"));
+        session.execute(boundStatement.bind());
     }
 }
