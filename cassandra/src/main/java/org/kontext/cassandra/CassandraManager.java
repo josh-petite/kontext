@@ -8,21 +8,21 @@ import java.io.IOException;
 
 import com.google.inject.Inject;
 import org.kontext.common.repositories.PropertiesRepository;
-import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.kontext.data.DataSourceManager;
 
 import com.datastax.driver.core.Cluster;
 
 public class CassandraManager implements DataSourceManager {
 
-	@Inject
-	public CassandraManager() {
-	}
+    private final PropertiesRepository propertiesRepository;
 
+    @Inject
+	public CassandraManager(PropertiesRepository propertiesRepository) {
+        this.propertiesRepository = propertiesRepository;
+    }
 
 	@Override
 	public Closeable getConnection() {
-		PropertiesRepository propertiesRepository = new PropertiesRepositoryImpl();
 		String address = String.format("%s %s", propertiesRepository.read(cassandra_url),
 				propertiesRepository.read(cassandra_port));
 		Cluster cluster = Cluster.builder().addContactPoint(address).build();

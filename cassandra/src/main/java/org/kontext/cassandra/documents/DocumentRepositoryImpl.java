@@ -12,12 +12,12 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 import java.util.UUID;
 
 public class DocumentRepositoryImpl implements DocumentRepository {
-    private PropertiesRepository propertiesRepository;
+    private final PropertiesRepository propertiesRepository;
+    private final DataSourceManager dataSourceManager;
 
     private String documentsKeyspace;
     private String documentsTable;
     private BoundStatement storeDocumentBoundStatement;
-    private DataSourceManager dataSourceManager;
 	private Session session;
 
     @Inject

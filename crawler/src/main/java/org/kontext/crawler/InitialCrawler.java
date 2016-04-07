@@ -17,10 +17,8 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 public class InitialCrawler extends WebCrawler {
-    private final static Pattern FILTERS =
-            Pattern.compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz|php))$");
-
-    private DocumentRepository documentRepository;
+    private final static Pattern FILTERS = Pattern.compile(".*(\\.(css|js|gif|jpg|png|mp3|mp3|zip|gz|php))$");
+    private final DocumentRepository documentRepository;
 
     public InitialCrawler() {
         // this is AMAZINGLY GROSS, but due to the way this crawler works I have no choice
@@ -32,8 +30,7 @@ public class InitialCrawler extends WebCrawler {
         modules.add(new PropertiesRepositoryModule());
         modules.add(new DataSourceManagerModule());
         modules.add(new DocumentRepositoryModule());
-        Injector injector = Guice.createInjector(modules);
-        documentRepository = injector.getInstance(DocumentRepository.class);
+        documentRepository = Guice.createInjector(modules).getInstance(DocumentRepository.class);
     }
 
     /**
@@ -50,7 +47,7 @@ public class InitialCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url) {
         String href = url.getURL().toLowerCase();
         return !FILTERS.matcher(href).matches();
-//                && href.startsWith("http://en.wikipedia.org");
+                // && href.startsWith("http://en.wikipedia.org");
     }
 
     /**

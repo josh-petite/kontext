@@ -15,6 +15,8 @@ import java.util.ArrayList;
 
 public class App {
     public static void main(String[] args) {
+        // TODO: Externalize this somehow so the injector is referencable globally
+        // ...or whatever the best approach might be so we don't have to repeat this work
         ArrayList<AbstractModule> modules = new ArrayList<>();
         modules.add(new PropertiesRepositoryModule());
         modules.add(new DocumentRepositoryModule());
