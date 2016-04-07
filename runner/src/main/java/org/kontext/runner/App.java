@@ -25,7 +25,6 @@ public class App {
         DocumentRepository documentRepository = injector.getInstance(DocumentRepository.class);
 
         try {
-            documentRepository.init();
             Controller c = injector.getInstance(Controller.class);
             c.start();
         } catch (Exception e) {

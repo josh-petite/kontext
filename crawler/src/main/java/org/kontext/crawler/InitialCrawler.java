@@ -9,6 +9,7 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 
 import org.kontext.cassandra.documents.DocumentRepository;
+import org.kontext.cassandra.modules.DataSourceManagerModule;
 import org.kontext.cassandra.modules.DocumentRepositoryModule;
 import org.kontext.common.modules.PropertiesRepositoryModule;
 import java.util.ArrayList;
@@ -29,10 +30,10 @@ public class InitialCrawler extends WebCrawler {
         // we should look at another crawler or write our own
         ArrayList<AbstractModule> modules = new ArrayList<>();
         modules.add(new PropertiesRepositoryModule());
+        modules.add(new DataSourceManagerModule());
         modules.add(new DocumentRepositoryModule());
         Injector injector = Guice.createInjector(modules);
         documentRepository = injector.getInstance(DocumentRepository.class);
-        documentRepository.init();
     }
 
     /**

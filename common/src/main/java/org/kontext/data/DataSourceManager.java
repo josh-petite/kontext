@@ -9,13 +9,12 @@ public interface DataSourceManager {
 	 * 
 	 * @return an open connection
 	 */
-	public Closeable getConnection();
+	Closeable getConnection();
 	
 	/**
 	 * Closes the passed connection
 	 * 
 	 * @param closeable
 	 */
-	public void close(Closeable closeable);
-	
+	void close(Closeable closeable);
 }

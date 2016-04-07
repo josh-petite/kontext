@@ -4,7 +4,6 @@ import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.google.inject.Inject;
 
-import org.kontext.cassandra.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.data.DataSourceManager;
 
@@ -17,18 +16,21 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
     private String documentsKeyspace;
     private String documentsTable;
-    private PreparedStatement storeDocumentStatement;
-    private CassandraManager cassandraManager;
+    private BoundStatement storeDocumentBoundStatement;
+    private DataSourceManager dataSourceManager;
 	private Session session;
 
     @Inject
     public DocumentRepositoryImpl(PropertiesRepository propertiesRepository, DataSourceManager datasourceManager) {
         this.propertiesRepository = propertiesRepository;
-        cassandraManager = (CassandraManager) datasourceManager;
-		session = (Session) cassandraManager.getConnection();
+        this.dataSourceManager = datasourceManager;
+
+        init();
     }
 
-    public void init() {
+    private void init() {
+        session = (Session) dataSourceManager.getConnection();
+
         documentsKeyspace = propertiesRepository.read(cassandra_keyspace);
         documentsTable = propertiesRepository.read(cassandra_document_table);
 
@@ -36,7 +38,8 @@ public class DocumentRepositoryImpl implements DocumentRepository {
         ensureDocumentTableExistence();
 
         String cqlMask = "INSERT INTO %s (id, html, raw_text, link_count, create_date) VALUES (?, ?, ?, ?, toTimestamp(now()));";
-        storeDocumentStatement = session.prepare(String.format(cqlMask, documentsTable));
+        PreparedStatement statement = session.prepare(String.format(cqlMask, documentsTable));
+        storeDocumentBoundStatement = new BoundStatement(statement);
     }
 
     private void ensureDocumentTableExistence() {
@@ -59,8 +62,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     public void storeDocument(String html, String text, int linkCount) {
-        BoundStatement boundStatement = new BoundStatement(storeDocumentStatement);
-        session.execute(boundStatement.bind(UUID.randomUUID(), html, text, linkCount));
+        session.execute(storeDocumentBoundStatement.bind(UUID.randomUUID(), html, text, linkCount));
     }
 
     public void read() {
@@ -68,7 +70,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
                 .all()
                 .from(documentsKeyspace, documentsTable);
 
-        Session session = (Session) cassandraManager.getConnection();
+        Session session = (Session) dataSourceManager.getConnection();
         ResultSet results = session.execute(select);
 
         for (Row row : results) {
@@ -83,7 +85,8 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }   
 
     @Override
-	public void finalize() {
-		cassandraManager.close(session);
+	public void finalize() throws Throwable {
+        super.finalize();
+        dataSourceManager.close(session);
     }
 }
