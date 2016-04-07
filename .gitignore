@@ -2,6 +2,7 @@
 
 # Maven build target
 target/
+test-output/
 
 # IntelliJ project files
 .idea/
@@ -10,7 +11,7 @@ target/
 # Eclipse project and classpath files
 .project
 .classpath
-**/.settings/*
+.settings
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

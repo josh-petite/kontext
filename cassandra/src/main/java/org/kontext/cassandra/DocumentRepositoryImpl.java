@@ -3,7 +3,9 @@ package org.kontext.cassandra;
 import com.datastax.driver.core.*;
 import com.datastax.driver.core.querybuilder.QueryBuilder;
 import com.google.inject.Inject;
+
 import org.kontext.common.repositories.PropertiesRepository;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
 import java.util.UUID;
 
@@ -21,10 +23,10 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     }
 
     public void init() {
-        documentsKeyspace = propertiesRepository.read("cassandra_keyspace");
-        documentsTable = propertiesRepository.read("cassandra_document_table");
+        documentsKeyspace = propertiesRepository.read(cassandra_keyspace);
+        documentsTable = propertiesRepository.read(cassandra_document_table);
 
-        String address = String.format("%s %s", propertiesRepository.read("cassandra_url"), propertiesRepository.read("cassandra_port"));
+        String address = String.format("%s %s", propertiesRepository.read(cassandra_url), propertiesRepository.read(cassandra_port));
         Cluster cluster = Cluster.builder().addContactPoint(address).build();
         session = cluster.connect();
 
