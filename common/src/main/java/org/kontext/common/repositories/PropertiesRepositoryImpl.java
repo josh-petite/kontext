@@ -13,7 +13,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	private Properties properties = null;
 
 	private void load() {
-		LOG.debug("Loading properties");
+		if (LOG.isDebugEnabled()) LOG.debug("Loading properties");
 		InputStream configFile = ClassLoader.getSystemResourceAsStream(config_file);
 		if (configFile == null) {
 			try {
@@ -24,7 +24,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 			}
 		}
 		retrieveConfigContents(configFile);
-		LOG.debug("Loading properties complete");
+		if(LOG.isDebugEnabled()) LOG.debug("Loading properties complete");
 	}
 
 	private void retrieveConfigContents(InputStream configFile) {
