@@ -1,4 +1,4 @@
-package org.kontext.cassandra;
+package org.kontext.cassandra.documents;
 
 public interface DocumentRepository {
     void init();

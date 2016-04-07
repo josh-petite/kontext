@@ -4,20 +4,27 @@ import java.io.*;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 import java.util.Properties;
 
-public class PropertiesRepositoryImpl implements PropertiesRepository {
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+public class PropertiesRepositoryImpl implements PropertiesRepository {
+	
+	private static Logger LOG = LoggerFactory.getLogger(PropertiesRepositoryImpl.class);
 	private Properties properties = null;
 
 	private void load() {
+		LOG.debug("Loading properties");
 		InputStream configFile = ClassLoader.getSystemResourceAsStream(config_file);
 		if (configFile == null) {
 			try {
+				
 				throw new Exception(String.format("Expected configuration does not exist: %s", config_file));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		retrieveConfigContents(configFile);
+		LOG.debug("Loading properties complete");
 	}
 
 	private void retrieveConfigContents(InputStream configFile) {

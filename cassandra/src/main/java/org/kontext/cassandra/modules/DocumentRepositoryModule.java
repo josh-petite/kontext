@@ -1,8 +1,9 @@
 package org.kontext.cassandra.modules;
 
+import org.kontext.cassandra.documents.DocumentRepository;
+import org.kontext.cassandra.documents.DocumentRepositoryImpl;
+
 import com.google.inject.AbstractModule;
-import org.kontext.cassandra.DocumentRepository;
-import org.kontext.cassandra.DocumentRepositoryImpl;
 
 public class DocumentRepositoryModule extends AbstractModule {
     @Override
