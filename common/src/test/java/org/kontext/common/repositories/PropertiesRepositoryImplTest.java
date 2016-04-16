@@ -7,9 +7,15 @@ import org.testng.annotations.AfterClass;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
-public class PropertiesRepositoryImplTest {
-	PropertiesRepository propRepo = new PropertiesRepositoryImpl();
+import org.kontext.common.repositories.exception.PropertiesRepositoryException;
 
+public class PropertiesRepositoryImplTest {
+	PropertiesRepository propRepo;
+
+	public PropertiesRepositoryImplTest() throws PropertiesRepositoryException {
+		propRepo = new PropertiesRepositoryImpl();
+		Assert.assertNotNull(propRepo.getAllProperties());
+	}
 	@Test
 	public void testLoad() {
 		String value = propRepo.read(cassandra_document_table);

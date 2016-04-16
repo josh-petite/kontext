@@ -21,8 +21,9 @@ public interface PropertiesRepository {
 	 * 
 	 * @param key
 	 * @param value
+	 * @throws PropertiesRepositoryException 
 	 */
-	void write(String key, String value);
+	void write(String key, String value) throws PropertiesRepositoryException;
 
 	/**
 	 * Save the entire property set and make it retrievable.

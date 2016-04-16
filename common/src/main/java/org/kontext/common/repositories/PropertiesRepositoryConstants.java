@@ -13,7 +13,7 @@ public class PropertiesRepositoryConstants {
 	
 	public static final String properties_config_file = "config/config.properties";
 	public static final String properties_editable = "_editable";
-	public static final Object properties_table = "properties";
+	public static final Object properties_table = "properties_table";
 
 
 }

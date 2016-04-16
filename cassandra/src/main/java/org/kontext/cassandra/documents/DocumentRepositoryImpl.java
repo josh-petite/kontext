@@ -9,6 +9,7 @@ import org.kontext.data.DataSourceManager;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
+import java.util.Properties;
 import java.util.UUID;
 
 public class DocumentRepositoryImpl implements DocumentRepository {
@@ -30,9 +31,10 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
     private void init() {
         session = (Session) dataSourceManager.getConnection();
-
-        documentsKeyspace = propertiesRepository.read(cassandra_keyspace);
-        documentsTable = propertiesRepository.read(cassandra_document_table);
+        Properties properties = propertiesRepository.getAllProperties();
+        
+        documentsKeyspace = (String) properties.get(cassandra_keyspace);
+        documentsTable = (String) properties.get(cassandra_document_table);
 
         ensureKeyspaceExistence();
         ensureDocumentTableExistence();
