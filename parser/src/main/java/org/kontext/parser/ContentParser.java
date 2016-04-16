@@ -4,6 +4,8 @@ import org.kontext.common.repositories.PropertiesRepository;
 
 import com.google.inject.Inject;
 
+import edu.stanford.nlp.pipeline.StanfordCoreNLP;
+
 /**
  * Content parser takes in a batch of documents and parses the contents. Parser
  * shall be called when the subscriber (controller) of the batches find that a
@@ -20,6 +22,8 @@ public class ContentParser implements Runnable {
 
 	@Override
 	public void run() {
+		StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());
+		
 	}
 
 }

@@ -1,4 +1,4 @@
-package org.kontext.cassandra;
+package org.kontext.common;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_port;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_url;
