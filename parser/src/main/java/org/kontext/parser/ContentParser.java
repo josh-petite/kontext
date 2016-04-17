@@ -24,6 +24,9 @@ public class ContentParser implements Runnable {
 	public void run() {
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());
 		
+		
 	}
+	
+	
 
 }

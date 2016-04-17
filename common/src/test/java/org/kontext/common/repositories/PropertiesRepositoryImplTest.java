@@ -16,6 +16,7 @@ public class PropertiesRepositoryImplTest {
 		propRepo = new PropertiesRepositoryImpl();
 		Assert.assertNotNull(propRepo.getAllProperties());
 	}
+	
 	@Test
 	public void testLoad() {
 		String value = propRepo.read(cassandra_document_table);

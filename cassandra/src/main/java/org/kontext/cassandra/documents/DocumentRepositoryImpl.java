@@ -25,7 +25,6 @@ public class DocumentRepositoryImpl implements DocumentRepository {
     public DocumentRepositoryImpl(PropertiesRepository propertiesRepository, DataSourceManager datasourceManager) {
         this.propertiesRepository = propertiesRepository;
         this.dataSourceManager = datasourceManager;
-
         init();
     }
 
