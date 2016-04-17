@@ -46,6 +46,9 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	}
 
 	private void loadPropertiesToTable() throws PropertiesRepositoryException {
+		if (LOG.isDebugEnabled())
+			LOG.debug("Load properties to table.");
+		
 		String cqlMask = "INSERT INTO %s.%s (module, name, value) VALUES (?, ?, ?);";
 		String cql = String.format(cqlMask, properties.get(cassandra_keyspace),
 				properties.get(properties_table));
@@ -64,6 +67,9 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 			insertPropertiesBS.bind(module, _k, _v);
 			session.execute(insertPropertiesBS.bind());
 		}
+		
+		if (LOG.isDebugEnabled())
+			LOG.debug("Load properties to table - Complete.");
 	}
 
 	private String getModule(String _k) {
@@ -138,6 +144,10 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 
 	@Override
 	public void write(String key, String value) throws PropertiesRepositoryException {
+		if (properties == null) {
+			load();
+			return;
+		}
 		throw new PropertiesRepositoryException(writes_not_allowed);
 	}
 
@@ -149,5 +159,19 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	@Override
 	public void save() throws PropertiesRepositoryException {
 		throw new PropertiesRepositoryException(writes_not_allowed);
+	}
+
+	@Override
+	public void clear() {
+		if (LOG.isDebugEnabled())
+			LOG.debug("Dropping properties.");
+		String cqlMask = "DROP TABLE %s.%s;";
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace),
+				properties.get(properties_table));
+		PreparedStatement statement = session.prepare(cql);
+		BoundStatement insertPropertiesBS = new BoundStatement(statement);
+		session.execute(insertPropertiesBS.bind());
+		if (LOG.isDebugEnabled())
+			LOG.debug("Dropping properties - Complete.");
 	}
 }

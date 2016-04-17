@@ -38,4 +38,10 @@ public interface PropertiesRepository {
 	 * @return
 	 */
 	Properties getAllProperties();
+
+	/**
+	 * Clear properties from memory and Cassandra.
+	 * 
+	 */
+	void clear();
 }

@@ -29,6 +29,7 @@ public class PropertiesRepositoryImplTest {
 
 	@AfterClass
 	public void afterClass() {
+		propRepo.clear();
 	}
 
 }
