@@ -1,4 +1,4 @@
-package org.kontext.cassandra;
+package org.kontext.common;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_port;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_url;
@@ -23,8 +23,8 @@ public class CassandraManager implements DataSourceManager {
 
 	@Override
 	public Closeable getConnection() {
-		String address = String.format("%s %s", propertiesRepository.read(cassandra_url),
-				propertiesRepository.read(cassandra_port));
+		String address = String.format("%s %s", propertiesRepository.getAllProperties().get(cassandra_url),
+				propertiesRepository.getAllProperties().get(cassandra_port));
 		Cluster cluster = Cluster.builder().addContactPoint(address).build();
 		return cluster.connect();
 	}

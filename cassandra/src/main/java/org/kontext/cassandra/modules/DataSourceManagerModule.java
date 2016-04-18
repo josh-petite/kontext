@@ -1,7 +1,8 @@
 package org.kontext.cassandra.modules;
 
 import com.google.inject.AbstractModule;
-import org.kontext.cassandra.CassandraManager;
+
+import org.kontext.common.CassandraManager;
 import org.kontext.data.DataSourceManager;
 
 public class DataSourceManagerModule extends AbstractModule {

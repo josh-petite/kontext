@@ -11,6 +11,12 @@ public class PropertiesRepositoryConstants {
 	public static final String crawler_request_delay = "crawler_request_delay";
 	public static final String crawler_thread_count = "crawler_thread_count";
 	
-	public static final String config_file = "config/config.properties";
-
+	public static final String properties_config_file = "config/config.properties";
+	public static final String properties_editable = "_editable";
+	public static final Object properties_table = "properties_table";
+	
+	// Document attributes
+	public static final String id = "id";
+	public static final String raw_text = "raw_text"; 
+	
 }
