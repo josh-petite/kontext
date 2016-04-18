@@ -15,6 +15,14 @@ public interface DocumentRepository {
     ResultSet read(String partition);
     
     /**
+	 * Get a 'limited' number of the rows for a given partition. 
+	 * TODO Right now, partitions have not been defined.
+	 * 
+	 * @return
+	 */
+    ResultSet read(String partition, int limit);
+    
+    /**
      * Purge all items by partition
      * 
      */

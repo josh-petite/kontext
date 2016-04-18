@@ -33,7 +33,7 @@ public class App {
             e.printStackTrace();
         }
 
-        documentRepository.read();
-        documentRepository.purge();
+        documentRepository.read(null);
+        documentRepository.purge(null);
     }
 }

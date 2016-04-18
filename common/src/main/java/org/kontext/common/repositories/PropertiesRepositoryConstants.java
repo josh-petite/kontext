@@ -15,4 +15,8 @@ public class PropertiesRepositoryConstants {
 	public static final String properties_editable = "_editable";
 	public static final Object properties_table = "properties_table";
 	
+	// Document attributes
+	public static final String id = "id";
+	public static final String raw_text = "raw_text"; 
+	
 }

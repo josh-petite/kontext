@@ -89,8 +89,24 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 * QueryBuilder.select().all().from(...).where(partition)
 	 */
 	@Override
+	public ResultSet read(String partition, int limit) {
+		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable).limit(limit);
+		Session session = (Session) dataSourceManager.getConnection();
+		ResultSet results = session.execute(select);
+		return results;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.kontext.cassandra.documents.DocumentRepository#read(java.lang.String)
+	 * 
+	 * QueryBuilder.select().all().from(...).where(partition)
+	 */
+	@Override
 	public ResultSet read(String partition) {
-		Statement select = QueryBuilder.select().all().from(documentsKeyspace, documentsTable);
+		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable);
 		Session session = (Session) dataSourceManager.getConnection();
 		ResultSet results = session.execute(select);
 		return results;

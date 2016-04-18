@@ -20,6 +20,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 
 	private static final String writes_not_allowed = "Modifications to properties not allowed at this moment. ";
 	private static Logger LOG = LoggerFactory.getLogger(PropertiesRepositoryImpl.class);
+	
 	private Properties properties = null;
 	private Session session;
 
@@ -48,16 +49,15 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	private void loadPropertiesToTable() throws PropertiesRepositoryException {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Load properties to table.");
-		
+
 		String cqlMask = "INSERT INTO %s.%s (module, name, value) VALUES (?, ?, ?);";
-		String cql = String.format(cqlMask, properties.get(cassandra_keyspace),
-				properties.get(properties_table));
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement insertPropertiesBS = new BoundStatement(statement);
 		String _k = null;
 		String _v = null;
 		String module = null;
-		
+
 		for (Object key : properties.keySet()) {
 			_k = (String) key;
 			_v = properties.getProperty(_k);
@@ -67,7 +67,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 			insertPropertiesBS.bind(module, _k, _v);
 			session.execute(insertPropertiesBS.bind());
 		}
-		
+
 		if (LOG.isDebugEnabled())
 			LOG.debug("Load properties to table - Complete.");
 	}
@@ -80,7 +80,8 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	}
 
 	private void createPropertiesTable() {
-		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s (module varchar, name varchar, value varchar, editable boolean, PRIMARY KEY (module, name)); ";
+		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s "
+				+ "(module varchar, name varchar, value varchar, editable boolean, PRIMARY KEY (module, name)); ";
 		String cql = String.format(cqlMask, properties.get(PropertiesRepositoryConstants.cassandra_keyspace),
 				properties.get(PropertiesRepositoryConstants.properties_table));
 
@@ -121,24 +122,23 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	public String read(String key) {
 		if (key == null)
 			return null;
-		
+
 		String cqlMask = "SELECT value from %s.%s where module = ? and name = ?;";
-		String cql = String.format(cqlMask, properties.get(cassandra_keyspace),
-				properties.get(properties_table));
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement insertPropertiesBS = new BoundStatement(statement);
 		String _k = (String) key;
 		String module = getModule(_k);
-		
+
 		if (module == null)
 			return null;
-		
+
 		ResultSet rs = session.execute(insertPropertiesBS.bind(module, _k));
-		
+
 		Row result = rs.one();
 		if (result != null)
 			return result.getString(0);
-		
+
 		return null;
 	}
 
@@ -166,8 +166,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Dropping properties.");
 		String cqlMask = "DROP TABLE %s.%s;";
-		String cql = String.format(cqlMask, properties.get(cassandra_keyspace),
-				properties.get(properties_table));
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement insertPropertiesBS = new BoundStatement(statement);
 		session.execute(insertPropertiesBS.bind());
