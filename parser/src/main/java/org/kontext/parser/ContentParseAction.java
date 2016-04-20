@@ -1,14 +1,9 @@
 package org.kontext.parser;
 
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.id;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.raw_text;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.RecursiveAction;
-import java.util.concurrent.RecursiveTask;
 
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
@@ -34,7 +29,6 @@ import edu.stanford.nlp.util.CoreMap;
 public class ContentParseAction extends RecursiveAction {
 
 	private static final long serialVersionUID = 1L;
-	private static final int threshold = 10;
 	private static final Logger LOG = LoggerFactory.getLogger(ContentParseAction.class);
 
 	private static PropertiesRepository propsRepo = new PropertiesRepositoryImpl();
@@ -42,10 +36,17 @@ public class ContentParseAction extends RecursiveAction {
 	private int length;
 	private int start;
 
+	private final String parseString;
+
 	public ContentParseAction(List<Row> documents, int start) {
 		this.documents = documents;
 		this.length = documents.size();
 		this.start = start;
+		this.parseString = null;
+	}
+
+	public ContentParseAction(String parseString) {
+		this.parseString = parseString;
 	}
 
 	@Override
@@ -53,11 +54,16 @@ public class ContentParseAction extends RecursiveAction {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Length : " + length + "; Start = " + start);
 
-		if (length <= threshold) {
+		if (parseString != null) {
+			parse(parseString);
+			return;
+		}
+
+		if (length <= Integer.parseInt(propsRepo.read(parser_threshold))) {
 			parse();
 			return;
 		}
-		
+
 		int split = length / 2;
 
 		List<Row> firstSplit = documents.subList(start, start + split);
@@ -67,29 +73,32 @@ public class ContentParseAction extends RecursiveAction {
 
 	private void parse() {
 		String _rawText = null;
+		
+		for (Row document : documents) {
+			_rawText = document.getString(raw_text);
+			parse(_rawText);
+		}
+	}
 
+	private void parse(String _rawText) {
 		StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());
 		Annotation docAnnotation = null;
 
-		for (Row document : documents) {
-			_rawText = document.getString(raw_text);
+		docAnnotation = new Annotation(_rawText);
+		pipeline.annotate(docAnnotation);
 
-			docAnnotation = new Annotation(_rawText);
-			pipeline.annotate(docAnnotation);
-
-			List<CoreMap> sentences = docAnnotation.get(SentencesAnnotation.class);
-			parseSentences(sentences);
-		}
+		List<CoreMap> sentences = docAnnotation.get(SentencesAnnotation.class);
+		parseSentences(sentences);
 	}
 
 	private void parseSentences(List<CoreMap> sentences) {
 		for (CoreMap sentence : sentences) {
 			List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
 			parseSentence(tokens);
-			
+
 			Tree tree = sentence.get(TreeAnnotation.class);
 			tree.printLocalTree();
-			
+
 			SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
 			dependencies.prettyPrint();
 		}

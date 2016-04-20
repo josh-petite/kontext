@@ -1,0 +1,303 @@
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Freeform; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : allows; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : users; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : to; POS : TO; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : prepare; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : sophisticated; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : criteria; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : based; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : on; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : dtSearch; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : syntax; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : offline; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : or; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : online; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : ,; POS : ,; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : then; POS : RB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : save; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : criteria; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : by; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : running; POS : VBG; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : a; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : on; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : ingested; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : case; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : data; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : -LRB-; POS : -LRB-; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : legal; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : -RRB-; POS : -RRB-; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[allows/VBZ
+  nsubj>[search/NN amod>Freeform/JJ]
+  dobj>users/NNS
+  xcomp>[prepare/VB
+         mark>to/TO
+         dobj>[criteria/NNS amod>sophisticated/JJ compound>search/NN]
+         advcl:based_on>[offline/NN
+                         case>[based/VBN mwe>on/IN]
+                         compound>dtSearch/NN
+                         compound>syntax/NN
+                         cc>or/CC
+                         conj:or>online/NN]
+         advcl:based_on>
+         punct>,/,
+         cc>and/CC
+         conj:and>[save/VB
+                   advmod>then/RB
+                   dobj>[criteria/NNS det>the/DT compound>search/NN]
+                   advcl>[running/VBG
+                          mark>by/IN
+                          dobj>[search/NN det>a/DT]
+                          advcl>[ingested/VBN
+                                 mark>on/IN
+                                 dobj>[data/NNS
+                                       compound>case/NN
+                                       appos>[search/NN
+                                              punct>-LRB-/-LRB-
+                                              amod>legal/JJ
+                                              punct>-RRB-/-RRB-]]]]]]
+  xcomp>
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Searches; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : can; POS : MD; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : continue; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : to; POS : TO; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : be; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : refined; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : online; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : based; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : on; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : results; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : can; POS : MD; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : also; POS : RB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : be; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : rerun; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : for; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : verification; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[continue/VB
+  nsubj>Searches/NNS
+  aux>can/MD
+  xcomp>[refined/VBN
+         mark>to/TO
+         auxpass>be/VB
+         ccomp>[results/VBZ
+                nsubj>[online/JJ
+                       nmod:based_on>[search/NN
+                                      case>[based/VBN mwe>on/IN]
+                                      det>the/DT]]
+                cc>and/CC
+                conj:and>[rerun/VBN
+                          nsubjpass>
+                          aux>can/MD
+                          advmod>also/RB
+                          auxpass>be/VB
+                          nmod:for>[verification/NN case>for/IN]]]
+         ccomp>]
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Freeform; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : searches; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : are; POS : VBP; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : performed; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : at; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : case; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : level; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : on; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : data; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : that; POS : WDT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : has; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : been; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : ingested; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : into; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : case; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[performed/VBN
+  nsubjpass>[searches/NNS amod>Freeform/JJ]
+  auxpass>are/VBP
+  conj:and>[performed/VBN
+            nsubjpass>
+            nmod:on>[data/NNS
+                     case>on/IN
+                     acl:relcl>[ingested/VBN
+                                nsubjpass>that/WDT
+                                aux>has/VBZ
+                                auxpass>been/VBN
+                                nmod:into>[case/NN case>into/IN det>the/DT]]]]
+  nmod:at>[level/NN case>at/IN det>the/DT compound>case/NN]
+  cc>and/CC
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Freeform; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : is; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : flexible; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : powerful; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[flexible/JJ
+  nsubj>[search/NN amod>Freeform/JJ]
+  cop>is/VBZ
+  cc>and/CC
+  conj:and>[powerful/JJ nsubj>search/NN]
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : It; POS : PRP; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : uses; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : advanced; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : features; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : to; POS : TO; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : specify; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : order; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : of; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : precedence; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : can; POS : MD; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : contain; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : hundreds; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : of; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : terms; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[uses/VBZ
+  nsubj>It/PRP
+  dobj>[features/NNS amod>advanced/JJ compound>search/NN]
+  advcl>[specify/VB
+         mark>to/TO
+         dobj>[order/NN det>the/DT nmod:of>[precedence/NN case>of/IN]]]
+  cc>and/CC
+  conj:and>[contain/VB
+            nsubj>
+            aux>can/MD
+            dobj>[hundreds/NNS
+                  nmod:of>[terms/NNS case>of/IN compound>search/NN]]]
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : One; POS : CD; Named entity tag : NUMBER
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : advantage; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : of; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Freeform; POS : NNP; Named entity tag : MISC
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : is; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : that; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : its; POS : PRP$; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : syntax; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : is; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : similar; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : to; POS : TO; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : syntax; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : used; POS : VBN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : for; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : full-text; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : searching; POS : VBG; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[is/VBZ
+  nsubj>[advantage/NN
+         nummod>One/CD
+         nmod:of>[search/NN case>of/IN compound>Freeform/NNP]]
+  ccomp>[similar/JJ
+         mark>that/IN
+         nsubj>[syntax/NN nmod:poss>its/PRP$]
+         cop>is/VBZ
+         nmod:to>[syntax/NN
+                  case>to/TO
+                  det>the/DT
+                  acl>[used/VBN
+                       nmod:for>[full-text/JJ case>for/IN acl>searching/VBG]]]]
+  punct>./.]
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : This; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : is; POS : VBZ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : helpful; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : because; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : you; POS : PRP; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : can; POS : MD; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : take; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : complex; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : extensive; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : queries; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : from; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : opposing; POS : VBG; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : counsel; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : ,; POS : ,; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : in-house; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : litigation; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : support; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : departments; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : or; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : other; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : third-party; POS : JJ; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : tools; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : -LRB-; POS : -LRB-; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : which; POS : WDT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : conform; POS : VBP; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : to; POS : TO; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : syntax; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : -RRB-; POS : -RRB-; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : and; POS : CC; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : then; POS : RB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : run; POS : VB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : the; POS : DT; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : queries; POS : NNS; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : directly; POS : RB; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : in; POS : IN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : Freeform; POS : NNP; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : search; POS : NN; Named entity tag : O
+2016-04-19 21:48:50 [main] DEBUG o.kontext.parser.ContentParseAction - Word : .; POS : .; Named entity tag : O
+(ROOT (S) )
+[helpful/JJ
+  nsubj>This/DT
+  cop>is/VBZ
+  advcl>[take/VB
+         mark>because/IN
+         nsubj>you/PRP
+         aux>can/MD
+         dobj>[queries/NNS
+               compound>[complex/NN cc>and/CC conj:and>extensive/JJ]
+               compound>extensive/JJ
+               compound>search/NN]
+         advcl>[opposing/VBG
+                mark>from/IN
+                dobj>[departments/NNS
+                      compound>counsel/NN
+                      punct>,/,
+                      amod>in-house/JJ
+                      compound>litigation/NN
+                      compound>support/NN
+                      cc>or/CC
+                      conj:or>[tools/NNS amod>other/JJ amod>third-party/JJ]
+                      dep>[conform/VBP
+                           punct>-LRB-/-LRB-
+                           nsubj>which/WDT
+                           nmod:to>[syntax/NN case>to/TO det>the/DT]
+                           punct>-RRB-/-RRB-]]
+                dobj>]
+         cc>and/CC
+         conj:and>[run/VB
+                   nsubj>
+                   advmod>then/RB
+                   dobj>[queries/NNS det>the/DT]
+                   advmod>directly/RB
+                   nmod:in>[search/NN case>in/IN compound>Freeform/NNP]]]
+  advcl>
+  punct>./.]

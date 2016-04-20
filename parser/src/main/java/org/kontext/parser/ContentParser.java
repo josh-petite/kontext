@@ -10,8 +10,8 @@ package org.kontext.parser;
  */
 public abstract class ContentParser {
 
-	private static final long serialVersionUID = 1L;
-
 	public abstract void parse();
+	
+	public abstract void parse(String parseMe);
 
 }

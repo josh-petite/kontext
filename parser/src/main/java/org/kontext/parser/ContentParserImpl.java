@@ -21,4 +21,10 @@ public class ContentParserImpl extends ContentParser {
 		action.invoke();
 	}
 
+	@Override
+	public void parse(String parseMe) {
+		RecursiveAction action = new ContentParseAction(parseMe);
+		action.invoke();
+	}
+
 }
