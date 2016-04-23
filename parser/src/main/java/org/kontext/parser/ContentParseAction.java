@@ -31,7 +31,7 @@ public class ContentParseAction extends RecursiveAction {
 	private static final long serialVersionUID = 1L;
 	private static final Logger LOG = LoggerFactory.getLogger(ContentParseAction.class);
 
-	private static PropertiesRepository propsRepo = new PropertiesRepositoryImpl();
+	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 	private List<Row> documents;
 	private int length;
 	private int start;

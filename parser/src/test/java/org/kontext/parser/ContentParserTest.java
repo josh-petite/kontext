@@ -18,7 +18,7 @@ public class ContentParserTest {
 	private ContentParser cParser;
 
 	public ContentParserTest() {
-		propsRepo = new PropertiesRepositoryImpl();
+		propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 		dsMgr = new CassandraManager(propsRepo);
 		docsRepo = new DocumentRepositoryImpl(propsRepo, dsMgr);
 		cParser = new ContentParserImpl(docsRepo);
@@ -38,6 +38,12 @@ public class ContentParserTest {
 	@Test
 	public void testRunComplexSentence() throws ContentParserException {
 		String parseMe = "Search is a feature that many software systems cannot function without.";
+		cParser.parse(parseMe);
+	}
+	
+	@Test
+	public void testRunSimpleSentence() throws ContentParserException {
+		String parseMe = "Robert was big and tall.";
 		cParser.parse(parseMe);
 	}
 	

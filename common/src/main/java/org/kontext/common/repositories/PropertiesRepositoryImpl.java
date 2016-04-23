@@ -19,27 +19,46 @@ import com.datastax.driver.core.Session;
 public class PropertiesRepositoryImpl implements PropertiesRepository {
 
 	private static final String writes_not_allowed = "Modifications to properties not allowed at this moment. ";
+	private static final String not_initialized = "-999";
+	private static final String properties_value = "value";
+	
 	private static Logger LOG = LoggerFactory.getLogger(PropertiesRepositoryImpl.class);
 	
-	private Properties properties = null;
-	private Session session;
+	private static Properties properties = null;
+	private static Session session;
+	
+	private static PropertiesRepositoryImpl INSTANCE;
 
-	public PropertiesRepositoryImpl() {
+	private PropertiesRepositoryImpl() {
 		try {
 			retrieveConfigContents();
-			this.session = (Session) new CassandraManager(this).getConnection();
+			session = (Session) new CassandraManager(this).getConnection();
 			load();
 		} catch (PropertiesRepositoryException e) {
 			if (LOG.isErrorEnabled())
 				LOG.error("Could not initialize properties repository. ", e);
 		}
 	}
+	
+	public static PropertiesRepositoryImpl getPropsRepo() {
+		if (INSTANCE == null)
+			INSTANCE = new PropertiesRepositoryImpl();
+		return INSTANCE;
+	}
 
 	private void load() throws PropertiesRepositoryException {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Loading properties");
 
+		/* Create if not present. */
 		createPropertiesTable();
+
+		String version = properties.getProperty(properties_version);
+		String _version = getVersion();
+		
+		if (version.equals(_version))
+			return;
+		
 		loadPropertiesToTable();
 
 		if (LOG.isDebugEnabled())
@@ -49,7 +68,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	private void loadPropertiesToTable() throws PropertiesRepositoryException {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Load properties to table.");
-
+		
 		String cqlMask = "INSERT INTO %s.%s (module, name, value) VALUES (?, ?, ?);";
 		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
 		PreparedStatement statement = session.prepare(cql);
@@ -62,6 +81,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 			_k = (String) key;
 			_v = properties.getProperty(_k);
 			module = getModule(_k);
+			
 			if (module == null)
 				throw new PropertiesRepositoryException(module_name_required);
 			insertPropertiesBS.bind(module, _k, _v);
@@ -70,6 +90,21 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 
 		if (LOG.isDebugEnabled())
 			LOG.debug("Load properties to table - Complete.");
+	}
+	
+	private static String getVersion() {
+		String cqlMask = "SELECT value from %s.%s WHERE module = ? and name = ?";
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
+
+		PreparedStatement statement = session.prepare(cql);
+		BoundStatement boundStatement = new BoundStatement(statement);
+		Row row = session.execute(boundStatement.bind(properties_module, properties_version)).one();
+		
+		if (row == null)
+			return not_initialized;
+		
+		String version = row.getString(properties_value);
+		return version;
 	}
 
 	private String getModule(String _k) {
@@ -82,8 +117,8 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	private void createPropertiesTable() {
 		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s "
 				+ "(module varchar, name varchar, value varchar, editable boolean, PRIMARY KEY (module, name)); ";
-		String cql = String.format(cqlMask, properties.get(PropertiesRepositoryConstants.cassandra_keyspace),
-				properties.get(PropertiesRepositoryConstants.properties_table));
+		
+		String cql = String.format(cqlMask, properties.get(cassandra_keyspace), properties.get(properties_table));
 
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement boundStatement = new BoundStatement(statement);
@@ -94,6 +129,9 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 		InputStream configFile = null;
 
 		try {
+			if (properties != null)
+				return;
+			
 			configFile = ClassLoader.getSystemResourceAsStream(properties_config_file);
 			if (configFile == null) {
 				throw new PropertiesRepositoryException(config_file_not_found);

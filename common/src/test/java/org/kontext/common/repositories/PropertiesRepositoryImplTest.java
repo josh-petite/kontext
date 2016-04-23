@@ -13,7 +13,7 @@ public class PropertiesRepositoryImplTest {
 	PropertiesRepository propRepo;
 
 	public PropertiesRepositoryImplTest() throws PropertiesRepositoryException {
-		propRepo = new PropertiesRepositoryImpl();
+		propRepo = PropertiesRepositoryImpl.getPropsRepo();
 		Assert.assertNotNull(propRepo.getAllProperties());
 	}
 	

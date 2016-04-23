@@ -24,7 +24,7 @@ public class DocumentRepositoryImplTest {
 	private DataSourceManager dsMgr;
 	
 	public DocumentRepositoryImplTest() {
-		propsRepo = new PropertiesRepositoryImpl();
+		propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 		dsMgr = new CassandraManager(propsRepo);
 		docsRepo = new DocumentRepositoryImpl(propsRepo, dsMgr);
 	}
