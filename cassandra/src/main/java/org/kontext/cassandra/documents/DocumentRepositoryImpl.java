@@ -10,13 +10,18 @@ import org.kontext.data.DataSourceManager;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Properties;
 import java.util.UUID;
 
 public class DocumentRepositoryImpl implements DocumentRepository {
 	private final PropertiesRepository propertiesRepository;
 	private final DataSourceManager dataSourceManager;
-
+	
+	/* Batch = Date */
+	private final String todaysDate;
+	
 	private String documentsKeyspace;
 	private String documentsTable;
 	private BoundStatement storeDocumentBoundStatement;
@@ -26,7 +31,12 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	public DocumentRepositoryImpl(PropertiesRepository propertiesRepository, DataSourceManager datasourceManager) {
 		this.propertiesRepository = propertiesRepository;
 		this.dataSourceManager = datasourceManager;
+		todaysDate = getTodaysDate();
 		init();
+	}
+	
+	private static String getTodaysDate() {
+		return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 	}
 
 	private void init() {
@@ -40,14 +50,15 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 		ensureDocumentTableExistence();
 
 		String cqlMask = "INSERT INTO %s (id, html, raw_text, link_count, create_date) "
-				+ "VALUES (?, ?, ?, ?, toTimestamp(now()));";
+				+ "VALUES (?, ?, ?, ?, toTimestamp('" + todaysDate + "'));";
 		PreparedStatement statement = session.prepare(String.format(cqlMask, documentsTable));
 		storeDocumentBoundStatement = new BoundStatement(statement);
 	}
 
 	private void ensureDocumentTableExistence() {
 		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s "
-				+ "(id UUID PRIMARY KEY, html text, raw_text text, link_count int, create_date timestamp);";
+				+ "(id UUID, html text, raw_text text, link_count int, create_date timestamp, "
+				+ "parsed_out text, PRIMARY KEY (create_date, id));";
 		String cql = String.format(cqlMask, documentsKeyspace, documentsTable);
 
 		PreparedStatement statement = session.prepare(cql);
