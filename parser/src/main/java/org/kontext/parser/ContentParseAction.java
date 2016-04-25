@@ -1,10 +1,14 @@
 package org.kontext.parser;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_keyspace;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.create_date;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.id;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.parser_threshold;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.raw_text;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
