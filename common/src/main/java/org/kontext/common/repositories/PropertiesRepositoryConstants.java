@@ -11,16 +11,18 @@ public class PropertiesRepositoryConstants {
 	public static final String crawler_request_delay = "crawler_request_delay";
 	public static final String crawler_thread_count = "crawler_thread_count";
 	
+	// Properties repository
 	public static final String properties_version = "properties_version";
 	public static final String properties_module = "properties";
 	public static final String properties_config_file = "config/config.properties";
 	public static final String properties_editable = "_editable";
-	public static final Object properties_table = "properties_table";
+	public static final String properties_table = "properties_table";
 	
 	public static final String parser_threshold = "parser_threshold";
 	
 	// Document attributes
 	public static final String id = "id";
 	public static final String raw_text = "raw_text"; 
+	public static final String create_date = "create_date";
 	
 }
