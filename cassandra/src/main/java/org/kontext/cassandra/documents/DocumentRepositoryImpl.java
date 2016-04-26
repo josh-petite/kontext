@@ -12,6 +12,7 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -100,7 +101,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 * QueryBuilder.select().all().from(...).where(partition)
 	 */
 	@Override
-	public ResultSet read(String partition, int limit) {
+	public ResultSet read(Date partition, int limit) {
 		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable).limit(limit);
 		Session session = (Session) dataSourceManager.getConnection();
 		ResultSet results = session.execute(select);
@@ -116,7 +117,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 * QueryBuilder.select().all().from(...).where(partition)
 	 */
 	@Override
-	public ResultSet read(String partition) {
+	public ResultSet read(Date createDate) {
 		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable);
 		Session session = (Session) dataSourceManager.getConnection();
 		ResultSet results = session.execute(select);
@@ -124,7 +125,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	}
 
 	@Override
-	public void purge(String partition) {
+	public void purge(Date partition) {
 		PreparedStatement statement = session
 				.prepare(String.format("TRUNCATE %s.%s;", documentsKeyspace, documentsTable));
 		BoundStatement boundStatement = new BoundStatement(statement);

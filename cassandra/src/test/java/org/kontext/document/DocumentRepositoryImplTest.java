@@ -1,5 +1,6 @@
 package org.kontext.document;
 
+import java.util.Date;
 import java.util.List;
 
 import org.kontext.cassandra.documents.DocumentRepository;
@@ -43,7 +44,7 @@ public class DocumentRepositoryImplTest {
 	
 	@Test
 	public void testRead() {
-		String partition = "dummyPartition";
+		Date partition = new Date(System.currentTimeMillis());
 		List<Row> allDocuments = docsRepo.read(partition).all();
 		System.out.println("Size of the result set = " + allDocuments.size());
 		Assert.assertFalse(allDocuments.isEmpty());
@@ -51,7 +52,7 @@ public class DocumentRepositoryImplTest {
 	
 	@Test
 	public void testReadByLimit() {
-		String partition = "dummyPartition";
+		Date partition = new Date(System.currentTimeMillis());
 		List<Row> limitedDocuments = (List<Row>) docsRepo.read(partition, 10).all();
 		System.out.println("Size of the result set = " + limitedDocuments.size());
 		Assert.assertEquals(limitedDocuments.size(), 10);
