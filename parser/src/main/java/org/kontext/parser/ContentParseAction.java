@@ -1,11 +1,6 @@
 package org.kontext.parser;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_keyspace;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.create_date;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.id;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.parser_threshold;
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.raw_text;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -48,22 +43,23 @@ public class ContentParseAction extends RecursiveAction {
 	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 	private List<Row> documents;
 	private int length;
-	private int start;
 	
 	private static final StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());;
 	private static Session session;
 	
 	private final String parseString;
 
-	public ContentParseAction(List<Row> documents, int start) {
+	public ContentParseAction(List<Row> documents) {
 		this.documents = documents;
 		this.length = documents.size();
-		this.start = start;
 		
 		this.parseString = null;
 		session = (Session) new CassandraManager(propsRepo).getConnection();
 	}
 
+	/*
+	 * To support parsing a string directly rather than via a document.
+	 */
 	public ContentParseAction(String parseString) {
 		this.parseString = parseString;
 	}
@@ -71,7 +67,7 @@ public class ContentParseAction extends RecursiveAction {
 	@Override
 	protected void compute() {
 		if (LOG.isDebugEnabled())
-			LOG.debug("Length : " + length + "; Start = " + start);
+			LOG.debug("Number of documents : " + length);
 
 		if (parseString != null) {
 			parse(null, null, parseString);
@@ -85,9 +81,9 @@ public class ContentParseAction extends RecursiveAction {
 
 		int split = length / 2;
 
-		List<Row> firstSplit = documents.subList(start, start + split);
-		List<Row> secondSplit = documents.subList(start + split, start + 2 * split);
-		invokeAll(new ContentParseAction(firstSplit, start), new ContentParseAction(secondSplit, start + split));
+		List<Row> firstSplit = documents.subList(0, split);
+		List<Row> secondSplit = documents.subList(split, length);
+		invokeAll(new ContentParseAction(firstSplit), new ContentParseAction(secondSplit));
 	}
 
 	private void parse() {

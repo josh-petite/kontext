@@ -11,8 +11,10 @@ import org.kontext.data.DataSourceManager;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -147,16 +149,31 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 * is being crossed.
 	 */
 	@Override
-	public long count() throws DocumentRepositoryException {
+	public long count(Date partition) throws DocumentRepositoryException {
 		PreparedStatement statement = session
-				.prepare(String.format("SELECT count(*) from %s.%s;", documentsKeyspace, documentsTable));
+				.prepare(String.format("SELECT count(*) from %s.%s WHERE create_date = ?;", documentsKeyspace, documentsTable));
 		BoundStatement boundStatement = new BoundStatement(statement);
-		ResultSet countRS = session.execute(boundStatement.bind());
+		ResultSet countRS = session.execute(boundStatement.bind(partition));
 		Row countRow = countRS.one();
 
 		if (countRow == null)
 			return 0;
 
 		return countRow.getLong(0);
+	}
+
+	@Override
+	public List<Date> getAllPartitions() {
+		PreparedStatement statement = session
+				.prepare(String.format("SELECT distinct create_date from %s.%s;", documentsKeyspace, documentsTable));
+		BoundStatement boundStatement = new BoundStatement(statement);
+		ResultSet countRS = session.execute(boundStatement.bind());
+		
+		List<Date> createDates = new ArrayList<>();
+		for (Row row : countRS.all()) {
+			createDates.add(row.getTimestamp(create_date));
+		}
+		
+		return createDates;
 	}
 }

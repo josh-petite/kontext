@@ -1,15 +1,15 @@
 package org.kontext.analyser;
 
 import org.kontext.common.repositories.PropertiesRepository;
+import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.kontext.data.DataSourceManager;
 
 public class ContextAnalyserImpl implements ContextAnalyser {
 	
-	private PropertiesRepository propsRepo;
+	private static final PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 	private DataSourceManager dataSourceMgr;
 	
-	public ContextAnalyserImpl(PropertiesRepository propsRepo, DataSourceManager dataSourceMgr) {
-		this.propsRepo = propsRepo;
+	public ContextAnalyserImpl(DataSourceManager dataSourceMgr) {
 		this.dataSourceMgr = dataSourceMgr;
 	}
 
@@ -22,10 +22,6 @@ public class ContextAnalyserImpl implements ContextAnalyser {
 	@Override
 	public void analyse() {
 		
-	}
-	
-	public PropertiesRepository getPropertiesRepository() {
-		return propsRepo;
 	}
 	
 	public DataSourceManager getDataSourceMgr() {

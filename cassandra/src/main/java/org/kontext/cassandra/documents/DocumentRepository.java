@@ -1,6 +1,7 @@
 package org.kontext.cassandra.documents;
 
 import java.util.Date;
+import java.util.List;
 
 import org.kontext.cassandra.documents.exception.DocumentRepositoryException;
 
@@ -44,5 +45,12 @@ public interface DocumentRepository {
      * 
      * @return
      */
-    long count() throws DocumentRepositoryException;
+    long count(Date partition) throws DocumentRepositoryException;
+
+    /**
+     * Returns all the partition identifiers pertaining to document repository
+     * 
+     * @return list of all partition identifiers
+     */
+    List<Date> getAllPartitions(); 
 }

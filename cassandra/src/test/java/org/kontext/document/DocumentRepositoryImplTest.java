@@ -23,6 +23,7 @@ public class DocumentRepositoryImplTest {
 	private DocumentRepository docsRepo;
 	private PropertiesRepository propsRepo;
 	private DataSourceManager dsMgr;
+	private List<Date> partitions;
 	
 	public DocumentRepositoryImplTest() {
 		propsRepo = PropertiesRepositoryImpl.getPropsRepo();
@@ -32,12 +33,12 @@ public class DocumentRepositoryImplTest {
 	
 	@BeforeClass
 	public void doNothing() {
-		
+		partitions = docsRepo.getAllPartitions();
 	}
 	
 	@Test
 	public void testCount() throws DocumentRepositoryException {
-		long count = docsRepo.count();
+		long count = docsRepo.count(partitions.get(0));
 		System.out.println(count);
 		Assert.assertTrue(count > 0);
 	}

@@ -17,7 +17,7 @@ public class ContentParserImpl extends ContentParser {
 	@Override
 	public void parse() {
 		List<Row> documents = docsRepo.read(null, 1).all();
-		RecursiveAction action = new ContentParseAction(documents, 0);
+		RecursiveAction action = new ContentParseAction(documents);
 		action.invoke();
 	}
 
