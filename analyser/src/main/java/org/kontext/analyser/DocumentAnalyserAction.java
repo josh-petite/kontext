@@ -53,6 +53,8 @@ public class DocumentAnalyserAction extends RecursiveAction {
 	}
 
 	private void analyse() {
+		if(LOG.isDebugEnabled())
+			LOG.debug("Number of documents to be analysed - " + documents.size());
 	}
 
 }

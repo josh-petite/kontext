@@ -52,7 +52,7 @@ public class ContextAnalyserAction extends RecursiveAction {
 		}
 
 		List<Date> firstHalf = partitions.subList(0, length / 2);
-		List<Date> secondHalf = partitions.subList(length / 2, length - 1);
+		List<Date> secondHalf = partitions.subList(length / 2, length);
 
 		invokeAll(new ContextAnalyserAction(firstHalf), new ContextAnalyserAction(secondHalf));
 	}
