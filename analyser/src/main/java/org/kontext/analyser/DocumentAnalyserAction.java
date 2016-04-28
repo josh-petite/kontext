@@ -6,12 +6,15 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.RecursiveAction;
 
+import org.apache.commons.lang.SerializationUtils;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.Row;
+
+import edu.stanford.nlp.util.CoreMap;
 
 public class DocumentAnalyserAction extends RecursiveAction {
 
@@ -55,6 +58,13 @@ public class DocumentAnalyserAction extends RecursiveAction {
 	private void analyse() {
 		if(LOG.isDebugEnabled())
 			LOG.debug("Number of documents to be analysed - " + documents.size());
+		
+		for (Row document : documents) {
+			@SuppressWarnings("unchecked")
+			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(document.getBytes(parsed_out).array());
+			DocumentAnalyser docAnalyser = new DocumentAnalyser(document.getUUID(id), sentences);
+			docAnalyser.analyse();
+		}
 	}
 
 }

@@ -13,6 +13,8 @@ public class Context {
 	private final Set<String> synonyms;
 
 	private final Set<Association> associations;
+	private final Set<Context> contexts;
+	
 	private final Set<Content> contents;
 
 	public Context(ContextBuilder cBuilder) {
@@ -22,6 +24,7 @@ public class Context {
 		this.synonyms = cBuilder.synonyms;
 		this.associations = cBuilder.associations;
 		this.contents = cBuilder.contents;
+		this.contexts = cBuilder.contexts;
 	}
 
 	public String getName() {
@@ -47,9 +50,12 @@ public class Context {
 	public Set<Content> getContents() {
 		return contents;
 	}
+	
+	public Set<Context> getContexts() {
+		return contexts;
+	}
 
-	public class ContextBuilder {
-		private ContextBuilder cBuilder = new ContextBuilder();
+	public static class ContextBuilder {
 
 		private String name;
 		private UUID id;
@@ -57,11 +63,10 @@ public class Context {
 		private Set<String> synonyms;
 		private Set<Association> associations;
 		private Set<Content> contents;
+		private Set<Context> contexts;
 
-		public ContextBuilder getBuilder() {
-			return cBuilder;
-		}
-
+		public  ContextBuilder() {}
+		
 		public ContextBuilder name(String name) {
 			this.name = name;
 			return this;
@@ -87,9 +92,18 @@ public class Context {
 			return this;
 		}
 
+		public ContextBuilder contexts(Set<Context> contexts) {
+			this.contexts = contexts;
+			return this;
+		}
+		
 		public ContextBuilder contents(Set<Content> contents) {
 			this.contents = contents;
 			return this;
+		}
+
+		public Context build() {
+			return new Context(this);
 		}
 	}
 

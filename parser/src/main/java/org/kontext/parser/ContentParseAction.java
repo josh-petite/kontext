@@ -114,8 +114,8 @@ public class ContentParseAction extends RecursiveAction {
 	private void persistParseOut(UUID id, Date createDate, List<CoreMap> sentences) {
 		byte[] parsedOut = SerializationUtils.serialize((Serializable) sentences);
 		
-		String cqlMask = "UPDATE %s.%s SET parsed_out = ? where create_date = ? and id = ?; ";
-		String cql = String.format(cqlMask, propsRepo.read(cassandra_keyspace), propsRepo.read(cassandra_document_table));
+		String cqlMask = "UPDATE %s.%s SET %s = ? where create_date = ? and id = ?; ";
+		String cql = String.format(cqlMask, propsRepo.read(cassandra_keyspace), propsRepo.read(cassandra_document_table), parsed_out);
 
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement boundStatement = new BoundStatement(statement);

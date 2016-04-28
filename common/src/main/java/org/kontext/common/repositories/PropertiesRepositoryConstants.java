@@ -31,5 +31,6 @@ public class PropertiesRepositoryConstants {
 	public static final String id = "id";
 	public static final String raw_text = "raw_text"; 
 	public static final String create_date = "create_date";
+	public static final String parsed_out = "parsed_out";
 	
 }
