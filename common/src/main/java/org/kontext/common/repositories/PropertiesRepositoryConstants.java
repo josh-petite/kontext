@@ -7,6 +7,7 @@ public class PropertiesRepositoryConstants {
 	public static final String cassandra_port = "cassandra_port";
 	public static final String cassandra_keyspace = "cassandra_keyspace";
 	public static final String cassandra_document_table = "cassandra_document_table";
+	public static final String cassandra_context_table = "cassandra_context_table";
 
 	// Crawler properties
 	public static final String crawler_storage_folder = "crawler_storage_folder";

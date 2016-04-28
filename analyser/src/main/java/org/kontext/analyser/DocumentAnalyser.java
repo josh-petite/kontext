@@ -1,30 +1,29 @@
 package org.kontext.analyser;
 
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.analyser_partition_threshold;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_context_table;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_keyspace;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.UUID;
 
-import org.kontext.analyser.context.Association;
 import org.kontext.analyser.context.Context;
-import org.kontext.analyser.context.Context.ContextBuilder;
-import org.kontext.cassandra.documents.DocumentRepository;
-import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
-import org.kontext.data.Content;
 import org.kontext.data.DataSourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.stanford.nlp.ling.CoreLabel;
+import com.datastax.driver.core.BoundStatement;
+import com.datastax.driver.core.PreparedStatement;
+import com.datastax.driver.core.Session;
+
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TextAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.TokensAnnotation;
+import edu.stanford.nlp.ling.CoreLabel;
 import edu.stanford.nlp.semgraph.SemanticGraph;
 import edu.stanford.nlp.semgraph.SemanticGraphCoreAnnotations.CollapsedCCProcessedDependenciesAnnotation;
 import edu.stanford.nlp.trees.Tree;
@@ -36,17 +35,19 @@ public class DocumentAnalyser implements ContextAnalyser {
 	private static final Logger LOG = LoggerFactory.getLogger(DocumentAnalyser.class);
 	private static final PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 
-	private static DocumentRepository docsRepo;
 	private static DataSourceManager datasourceMgr;
 
 	private final UUID docId;
 	private final List<CoreMap> sentences;
 
+	private static Session session;
 	private Context docContext;
 
 	static {
 		datasourceMgr = new CassandraManager(propsRepo);
-		docsRepo = new DocumentRepositoryImpl(propsRepo, datasourceMgr);
+		session = (Session) datasourceMgr.getConnection();
+		
+		init();
 	}
 
 	public DocumentAnalyser(UUID docId, List<CoreMap> sentences) {
@@ -80,6 +81,9 @@ public class DocumentAnalyser implements ContextAnalyser {
 			SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
 			dependencies.prettyPrint();
 		}
+		
+		if(LOG.isDebugEnabled())
+			LOG.debug(docContext.toString());
 	}
 
 	private void analyseSentence(CoreMap sentence) {
@@ -92,6 +96,25 @@ public class DocumentAnalyser implements ContextAnalyser {
 			if (LOG.isDebugEnabled())
 				LOG.debug("Word : " + word + "; POS : " + pos + "; Named entity tag : " + ne);
 		}
+	}
+	
+	private static void init() {
+		// initializing analyser shall involve the following
+		// 1. Creating document context table if not created
+		// 2. Primary key - id of the context
+		// 3. Can be associated to multiple contents, multiple associations, Nouns and Synonyms etc.
+		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s "
+				+ "(id UUID, "
+				+ "nouns set<text>, "
+				+ "synonyms set<text>, "
+				+ "document2confidence map<uuid, float>, "
+				+ "association2confidence map<uuid, float>, create_date timestamp, "
+				+ "PRIMARY KEY (create_date, id));";
+		String cql = String.format(cqlMask, propsRepo.read(cassandra_keyspace), propsRepo.read(cassandra_context_table));
+
+		PreparedStatement statement = session.prepare(cql);
+		BoundStatement boundStatement = new BoundStatement(statement);
+		session.execute(boundStatement.bind());
 	}
 
 }

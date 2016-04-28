@@ -2,6 +2,7 @@ package org.kontext.analyser;
 
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.RecursiveAction;
@@ -60,8 +61,12 @@ public class DocumentAnalyserAction extends RecursiveAction {
 			LOG.debug("Number of documents to be analysed - " + documents.size());
 		
 		for (Row document : documents) {
+			ByteBuffer byteBuffer = document.getBytes(parsed_out);
+			if (byteBuffer == null)
+				continue;
+			
 			@SuppressWarnings("unchecked")
-			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(document.getBytes(parsed_out).array());
+			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(byteBuffer.array());
 			DocumentAnalyser docAnalyser = new DocumentAnalyser(document.getUUID(id), sentences);
 			docAnalyser.analyse();
 		}

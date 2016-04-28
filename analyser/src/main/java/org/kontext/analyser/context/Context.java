@@ -106,5 +106,15 @@ public class Context {
 			return new Context(this);
 		}
 	}
+	
+	@Override
+	public String toString() {
+		StringBuilder context = new StringBuilder();
+		context.append("Nouns: " + nouns.toString());
+		context.append("; Synonyms: " + synonyms.toString());
+		context.append("; Associations: " + associations.toString());
+		context.append("; Contents: " + contents.toString());
+		return context.toString();
+	}
 
 }
