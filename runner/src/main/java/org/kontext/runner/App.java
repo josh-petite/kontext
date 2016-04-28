@@ -12,12 +12,13 @@ import org.kontext.crawler.Controller;
 import org.kontext.crawler.modules.ControllerModule;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class App {
     public static void main(String[] args) {
         // TODO: Externalize this somehow so the injector is referencable globally
         // ...or whatever the best approach might be so we don't have to repeat this work
-        ArrayList<AbstractModule> modules = new ArrayList<>();
+        List<AbstractModule> modules = new ArrayList<>();
         modules.add(new PropertiesRepositoryModule());
         modules.add(new DocumentRepositoryModule());
         modules.add(new ControllerModule());

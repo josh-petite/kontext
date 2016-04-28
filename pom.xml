@@ -12,7 +12,8 @@
 		<module>cassandra</module>
 		<module>runner</module>
     <module>parser</module>
-  </modules>
+    <module>analyser</module>
+	</modules>
 
 	<build>
 		<plugins>

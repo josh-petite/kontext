@@ -15,6 +15,7 @@ import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.ResultSet;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.google.inject.Inject;
 
 public class PropertiesRepositoryImpl implements PropertiesRepository {
 
@@ -29,6 +30,7 @@ public class PropertiesRepositoryImpl implements PropertiesRepository {
 	
 	private static PropertiesRepositoryImpl INSTANCE;
 
+	@Inject
 	private PropertiesRepositoryImpl() {
 		try {
 			retrieveConfigContents();

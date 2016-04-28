@@ -1,5 +1,8 @@
 package org.kontext.cassandra.documents;
 
+import java.util.Date;
+import java.util.List;
+
 import org.kontext.cassandra.documents.exception.DocumentRepositoryException;
 
 import com.datastax.driver.core.ResultSet;
@@ -12,7 +15,7 @@ public interface DocumentRepository {
 	 * 
 	 * @return
 	 */
-    ResultSet read(String partition);
+    ResultSet read(Date partition);
     
     /**
 	 * Get a 'limited' number of the rows for a given partition. 
@@ -20,13 +23,13 @@ public interface DocumentRepository {
 	 * 
 	 * @return
 	 */
-    ResultSet read(String partition, int limit);
+    ResultSet read(Date partition, int limit);
     
     /**
      * Purge all items by partition
      * 
      */
-    void purge(String partition);
+    void purge(Date partition);
     
     /**
      * Add documents to a partition
@@ -42,5 +45,12 @@ public interface DocumentRepository {
      * 
      * @return
      */
-    long count() throws DocumentRepositoryException;
+    long count(Date partition) throws DocumentRepositoryException;
+
+    /**
+     * Returns all the partition identifiers pertaining to document repository
+     * 
+     * @return list of all partition identifiers
+     */
+    List<Date> getAllPartitions(); 
 }
