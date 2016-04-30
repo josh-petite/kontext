@@ -37,6 +37,7 @@ public class PropertiesRepositoryConstants {
 	// Dictionary properties
 	public static final String dictionary_thesaurus = "dictionary_thesaurus";
 	public static final String dictionary_uri = "dictionary_uri";
+	public static final String dictionary_path = "dictionary_path";
 	public static final String dictionary_key = "key";
-	
+
 }

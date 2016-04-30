@@ -1,44 +1,54 @@
 package org.kontext.analyser.dictionary;
 
-import org.kontext.common.repositories.PropertiesRepository;
-import org.kontext.common.repositories.PropertiesRepositoryImpl;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_key;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_path;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_thesaurus;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_uri;
 
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
+import javax.ws.rs.client.Client;
+import javax.ws.rs.client.ClientBuilder;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.kontext.analyser.dictionary.exception.DictionaryException;
-
-import com.sun.jersey.api.client.Client;
-import com.sun.jersey.api.client.WebResource;
+import org.kontext.common.repositories.PropertiesRepository;
+import org.kontext.common.repositories.PropertiesRepositoryImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DictionaryHelper {
 	
-	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
+//	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 
-	public static WebResource getWebResource() throws DictionaryException {
+//	private static final Logger LOG = LoggerFactory.getLogger(DictionaryHelper.class);
+	
+	public static Response getDictionaryResponse(String noun) throws DictionaryException {
 		
-		WebResource dictionaryResource = null;
+		WebTarget dictionaryResource = null;
+		Response dictionaryResponse = null;
+		
 		try {
-			Client client = Client.create();
+			Client client = ClientBuilder.newClient();
 			
-			String uri = propsRepo.read(dictionary_uri);
-			String token = propsRepo.read(dictionary_thesaurus);
+			String uri = "http://www.dictionaryapi.com/"; // propsRepo.read(dictionary_uri);
+			String path = "api/v1/references/thesaurus/xml/" + noun; //propsRepo.read(dictionary_path);
+			String token = "649e53eb-b6e2-4f32-9cfb-eac3549f7e92"; //propsRepo.read(dictionary_thesaurus);
 			
-			dictionaryResource = client.resource(uri);
-			dictionaryResource.setProperty(dictionary_key, token);
+			String fullUrl = new StringBuilder(uri).append(path).toString();
+			dictionaryResource = client.target(fullUrl).queryParam(dictionary_key, token);
+			System.out.println(dictionaryResource.getUri().toURL().toString());
 			
-//			ClientResponse response = webResource.accept("application/json").get(ClientResponse.class);
-//			System.out.println(response.toString());
-//			if (response.getStatus() != 200) {
-//				throw new RuntimeException("Failed : HTTP error code : " + response.getStatus());
-//			}
-//
-//			String output = response.getEntity(String.class);
-//			System.out.println("\n============getFtoCResponse============");
-//			System.out.println(output);
-
+			dictionaryResponse = dictionaryResource.path(path).request().accept(MediaType.APPLICATION_XML).get();
+			
+//			if (LOG.isDebugEnabled())
+//				LOG.debug(dictionaryResponse.getEntity().toString());
+			
+			System.out.println(dictionaryResponse + " " + dictionaryResponse.getLength());
 		} catch (Exception e) {
 			throw new DictionaryException(e);
 		}
-		return dictionaryResource;
+		return dictionaryResponse;
 	}
+	
 }
