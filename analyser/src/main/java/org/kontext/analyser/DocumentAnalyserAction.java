@@ -67,7 +67,7 @@ public class DocumentAnalyserAction extends RecursiveAction {
 			
 			@SuppressWarnings("unchecked")
 			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(byteBuffer.array());
-			DocumentAnalyser docAnalyser = new DocumentAnalyser(document.getUUID(id), sentences);
+			DocumentAnalyserImpl docAnalyser = new DocumentAnalyserImpl(document.getUUID(id), sentences);
 			docAnalyser.analyse();
 		}
 	}

@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	attributeFormDefault="unqualified" elementFormDefault="qualified">
+	<xs:element name="entry_list" type="entry_listType" />
+	<xs:complexType name="termType">
+		<xs:sequence>
+			<xs:element type="xs:string" name="hw" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="viType" mixed="true">
+		<xs:sequence>
+			<xs:element type="xs:string" name="it" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="sensType">
+		<xs:sequence>
+			<xs:element type="xs:byte" name="sn" minOccurs="0" />
+			<xs:element type="xs:string" name="ssl" minOccurs="0" />
+			<xs:element type="xs:string" name="mc" />
+			<xs:element type="viType" name="vi" />
+			<xs:element name="syn">
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element type="xs:string" name="it" maxOccurs="unbounded"
+							minOccurs="0" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element name="rel">
+				<xs:complexType mixed="true">
+					<xs:sequence>
+						<xs:element type="xs:string" name="it" maxOccurs="unbounded"
+							minOccurs="0" />
+					</xs:sequence>
+				</xs:complexType>
+			</xs:element>
+			<xs:element type="xs:string" name="near" minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="synType" mixed="true">
+		<xs:sequence>
+			<xs:element type="xs:string" name="it" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="relType" mixed="true">
+		<xs:sequence>
+			<xs:element type="xs:string" name="it" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+	</xs:complexType>
+	<xs:complexType name="entryType">
+		<xs:sequence>
+			<xs:element type="termType" name="term" />
+			<xs:element type="xs:string" name="fl" />
+			<xs:element type="xs:string" name="sl" minOccurs="0" />
+			<xs:element type="sensType" name="sens" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute type="xs:string" name="id" use="optional" />
+	</xs:complexType>
+	<xs:complexType name="entry_listType">
+		<xs:sequence>
+			<xs:element type="entryType" name="entry" maxOccurs="unbounded"
+				minOccurs="0" />
+		</xs:sequence>
+		<xs:attribute type="xs:float" name="version" />
+	</xs:complexType>
+</xs:schema>

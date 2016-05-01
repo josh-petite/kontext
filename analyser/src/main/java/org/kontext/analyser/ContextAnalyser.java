@@ -7,4 +7,5 @@ public interface ContextAnalyser {
 	 * prepares and persists context prepared.
 	 */
 	void analyse();
+
 }
