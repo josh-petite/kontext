@@ -1,0 +1,353 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<entry_list version="1.0">
+	<entry id="house">
+		<term>
+			<hw>house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<sn>1</sn>
+			<mc>a commercial or industrial activity or organization</mc>
+			<vi>
+				a publishing
+				<it>house</it>
+				that specializes in school textbooks
+			</vi>
+			<syn>business, company, concern, establishment, firm, house,
+				interest, outfit</syn>
+			<rel>conglomerate, corporation, multinational; association, cartel,
+				chain, combine, syndicate, trust; agency, dealer, outlet;
+				microenterprise</rel>
+		</sens>
+		<sens>
+			<sn>2</sn>
+			<mc>a group of persons who come from the same ancestor</mc>
+			<vi>
+				the present British royal family belongs to the
+				<it>House</it>
+				of Windsor
+			</vi>
+			<syn>
+				blood, clan, folks, house, kin, kindred, kinfolk (
+				<it>or</it>
+				kinfolks), kinsfolk, line, lineage, people, race, stock, tribe
+			</syn>
+			<rel>
+				blended family, nuclear family; extended family, household, kith;
+				brood; descendant (
+				<it>also</it>
+				descendent), issue, offspring, progeny, scion, seed; clansman,
+				kinsman, kinswoman, relative; dynasty
+			</rel>
+			<near>ancestry, birth, descent, extraction, origin, pedigree</near>
+		</sens>
+		<sens>
+			<sn>3</sn>
+			<mc>the place where one lives</mc>
+			<vi>
+				come over to my
+				<it>house</it>
+				for supper so I can show off my new stove
+			</vi>
+			<syn>abode, diggings, domicile, dwelling, fireside, habitation,
+				hearth, hearthstone, house, lodging, pad, place, quarters,
+				residence, roof</syn>
+			<rel>
+				accommodations, housing, nest, residency, shelter; bungalow, cabin,
+				casita, chalet, cottage; duplex, ranch, ranch house, saltbox, semi [
+				<it>chiefly British</it>
+				], split level, townhome, town house, tract house, triplex;
+				apartment, apartment house, condominium, flat, tenement, tenement
+				house, walk-up; penthouse, salon, suite; barracks, billet,
+				boardinghouse, dorm, dormitory, lodging house, lodgment (
+				<it>or</it>
+				lodgement), room(s), rooming house; castle, château, countryseat,
+				estate, hall, manor, manor house, mansion, palace, villa; farmhouse,
+				grange, hacienda, homestead; double-wide, houseboat, house trailer,
+				mobile home, motor home, recreational vehicle, trailer; hermitage,
+				manse, parsonage, rectory, vicarage; hooch (
+				<it>or</it>
+				hootch) [
+				<it>slang</it>
+				], hovel, hut, hutch, shack, shanty
+			</rel>
+		</sens>
+		<sens>
+			<sn>4</sn>
+			<mc>those who live as a family in one house</mc>
+			<vi>
+				the whole
+				<it>house</it>
+				is in a state of excited anticipation for the holidays
+			</vi>
+			<syn>extended family, home, house, ménage</syn>
+			<rel>
+				blood, folks, kin, kindred, kinfolk (
+				<it>or</it>
+				kinfolks), kinsfolk, kith; brood; nuclear family; clan, community
+			</rel>
+		</sens>
+		<sens>
+			<sn>5</sn>
+			<mc>the shelter or resting place of a wild animal</mc>
+			<vi>
+				prairie dogs make their
+				<it>house</it>
+				underground
+			</vi>
+			<syn>burrow, hole, house, lair, lodge</syn>
+			<rel>nest; territory</rel>
+		</sens>
+	</entry>
+	<entry id="house">
+		<term>
+			<hw>house</hw>
+		</term>
+		<fl>verb</fl>
+		<sens>
+			<sn>1</sn>
+			<mc>to provide with living quarters or shelter</mc>
+			<vi>
+				some of the freshmen were temporarily
+				<it>housed</it>
+				in local motels while the new dorm was being finished
+			</vi>
+			<syn>accommodate, bestow, billet, bivouac, board, bunk, camp,
+				chamber, domicile, encamp, harbor, lodge, put up, quarter, roof,
+				room, shelter, take in</syn>
+			<rel>ensconce, home, roost, secure, shed, stable, tent; barrack; bed
+				(down)</rel>
+			<near>eject, evict</near>
+		</sens>
+		<sens>
+			<sn>2</sn>
+			<mc>to close or shut in by or as if by barriers</mc>
+			<vi>
+				<it>housed</it>
+				the stereo speakers in attractive walnut cabinets that match the
+				furniture
+			</vi>
+			<syn>box (in), cage, closet, coop (up), corral, encage, encase,
+				envelop, fence (in), hedge, hem (in), house, immure, include, mew
+				(up), pen, wall (in)</syn>
+			<rel>bound, circumscribe, confine, contain, limit, restrict;
+				encircle, encompass, enfold, enframe, enlace, frame, ring, surround;
+				armor, cocoon, encapsulate, encapsule, encyst, ensheathe, ensphere,
+				enwomb</rel>
+		</sens>
+	</entry>
+	<entry id="house cat">
+		<term>
+			<hw>house cat</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a small domestic animal known for catching mice</mc>
+			<vi>
+				the
+				<it>house cat</it>
+				at the Cheshire Cat Bookstore has the dual responsibility of being
+				mascot and mouser
+			</vi>
+			<syn>
+				feline, house cat, kitty, moggy (
+				<it>also</it>
+				moggie) [
+				<it>British</it>
+				], puss, pussy, pussycat
+			</syn>
+			<rel>mouser; kit, kitten; alley cat, tabby; gib, tomcat</rel>
+		</sens>
+	</entry>
+	<entry id="house girl">
+		<term>
+			<hw>house girl</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a female domestic servant</mc>
+			<vi>
+				visited the old plantation where her grandmother had long ago toiled
+				as a
+				<it>house girl</it>
+			</vi>
+			<syn>
+				biddy, char [
+				<it>British</it>
+				], charwoman, handmaiden (
+				<it>also</it>
+				handmaid), house girl, housekeeper, housemaid, maidservant, skivvy [
+				<it>British</it>
+				], wench
+			</syn>
+			<rel>attendant, chambermaid; abigail, lady-in-waiting,
+				maid-in-waiting; au pair, nursemaid; domestic, menial; amah, ayah</rel>
+		</sens>
+	</entry>
+	<entry id="bawdy house">
+		<term>
+			<hw>bawdy house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a building in which prostitutes are available</mc>
+			<vi>
+				a frontier mining town that had few diversions other than the local
+				<it>bawdy house</it>
+			</vi>
+			<syn>bagnio, bawdy house, brothel, cathouse, disorderly house,
+				sporting house, stew, whorehouse</syn>
+			<rel>call house, crib; massage parlor; harem, seraglio</rel>
+		</sens>
+	</entry>
+	<entry id="big house">
+		<term>
+			<hw>big house</hw>
+		</term>
+		<fl>noun</fl>
+		<sl>slang</sl>
+		<sens>
+			<mc>a place of confinement for persons held in lawful custody</mc>
+			<vi>
+				told harrowing stories of his years spent in the
+				<it>big house</it>
+			</vi>
+			<syn>
+				bastille, big house [
+				<it>slang</it>
+				], bridewell, brig, calaboose, can, clink [
+				<it>slang</it>
+				], cooler, coop, guardroom, hock, hold, hoosegow, jailhouse, joint [
+				<it>slang</it>
+				], jug, lockup, nick [
+				<it>British slang</it>
+				], pen, penitentiary, pokey [
+				<it>slang</it>
+				], prison, quod [
+				<it>British slang</it>
+				], slam, slammer, stir [
+				<it>slang</it>
+				], stockade, tolbooth [
+				<it>Scottish</it>
+				]
+			</syn>
+			<rel>
+				bull pen, cage, cell, hole, tank; block, ward; glasshouse [
+				<it>British</it>
+				], guardhouse, hulk(s); concentration camp, gulag, labor camp,
+				prison camp, stalag, work camp; dungeon, keep, oubliette;
+				reformatory, reform school, training school
+			</rel>
+			<near>outside</near>
+		</sens>
+	</entry>
+	<entry id="disorderly house">
+		<term>
+			<hw>disorderly house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a building in which prostitutes are available</mc>
+			<vi>
+				the penalty for anyone convicted of running a
+				<it>disorderly house</it>
+				in the city
+			</vi>
+			<syn>bagnio, bawdy house, brothel, cathouse, disorderly house,
+				sporting house, stew, whorehouse</syn>
+			<rel>call house, crib; massage parlor; harem, seraglio</rel>
+		</sens>
+	</entry>
+	<entry id="manor house">
+		<term>
+			<hw>manor house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a large impressive residence</mc>
+			<vi>
+				entertained everyone at their
+				<it>manor house</it>
+				after the wedding ceremony
+			</vi>
+			<syn>castle, château, estate, hacienda, hall, manor, manor house,
+				manse, palace, villa</syn>
+			<rel>showplace; abode, domicile, dwelling, habitation, hearth, home,
+				house, lodging(s), pad, place; housing, nest, quarter(s), residency,
+				roof; great house; country house, countryseat; aerie, penthouse;
+				salon, suite, town house</rel>
+		</sens>
+	</entry>
+	<entry id="public house">
+		<term>
+			<hw>public house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<sn>1</sn>
+			<mc>a place that provides rooms and usually a public dining room for
+				overnight guests</mc>
+			<vi>
+				took lodging at a cheap
+				<it>public house</it>
+				in a seedy part of town
+			</vi>
+			<syn>
+				auberge, caravansary (
+				<it>or</it>
+				caravanserai), hospice, hostel, hostelry, inn, lodge, public house,
+				tavern
+			</syn>
+			<rel>
+				B and B, bed-and-breakfast, guesthouse; apartment hotel;
+				accommodations, lodgings, rest; court, motel, motor court, motor
+				inn, motor lodge, resort, spa, tourist court, youth hostel; camp,
+				campground; bunkhouse, dorm, dormitory; boardinghouse, lodging
+				house, rooming house; doss-house [
+				<it>chiefly British</it>
+				], fleabag, flophouse
+			</rel>
+		</sens>
+		<sens>
+			<ssl>chiefly British</ssl>
+			<mc>a place of business where alcoholic beverages are sold to be
+				consumed on the premises</mc>
+			<vi>
+				visited a
+				<it>public house</it>
+				in London that has been welcoming customers since the time of
+				Charles Dickens
+			</vi>
+			<syn>
+				bar, café (
+				<it>also</it>
+				cafe), cantina [
+				<it>Southwest</it>
+				], dramshop, gin mill, grogshop [
+				<it>chiefly British</it>
+				], pub, public house [
+				<it>chiefly British</it>
+				], saloon, taproom, tavern, watering hole, watering place
+			</syn>
+			<rel>alehouse, barrelhouse, bistro, bottle club, brewpub, cabaret,
+				dive, joint, nightclub, roadhouse, speakeasy, sports bar, wineshop;
+				package store</rel>
+		</sens>
+	</entry>
+	<entry id="sporting house">
+		<term>
+			<hw>sporting house</hw>
+		</term>
+		<fl>noun</fl>
+		<sens>
+			<mc>a building in which prostitutes are available</mc>
+			<vi>
+				had a long career as a madam in a New Orleans
+				<it>sporting house</it>
+			</vi>
+			<syn>bagnio, bawdy house, brothel, cathouse, disorderly house,
+				sporting house, stew, whorehouse</syn>
+			<rel>call house, crib; massage parlor; harem, seraglio</rel>
+		</sens>
+	</entry>
+</entry_list>

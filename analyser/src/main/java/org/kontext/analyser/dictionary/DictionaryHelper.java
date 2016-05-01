@@ -5,50 +5,106 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.dict
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_thesaurus;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_uri;
 
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
 import org.kontext.analyser.dictionary.exception.DictionaryException;
+import org.kontext.analyser.dictionary.jaxb.EntryListType;
+import org.kontext.analyser.dictionary.jaxb.EntryType;
+import org.kontext.analyser.dictionary.jaxb.SensType;
+import org.kontext.analyser.dictionary.jaxb.SensType.Rel;
+import org.kontext.analyser.dictionary.jaxb.SensType.Syn;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class DictionaryHelper {
-	
-//	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
 
-//	private static final Logger LOG = LoggerFactory.getLogger(DictionaryHelper.class);
-	
+	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
+
+	private static final Logger LOG = LoggerFactory.getLogger(DictionaryHelper.class);
+
 	public static Response getDictionaryResponse(String noun) throws DictionaryException {
-		
+
 		WebTarget dictionaryResource = null;
 		Response dictionaryResponse = null;
-		
+
 		try {
 			Client client = ClientBuilder.newClient();
-			
-			String uri = "http://www.dictionaryapi.com/"; // propsRepo.read(dictionary_uri);
-			String path = "api/v1/references/thesaurus/xml/" + noun; //propsRepo.read(dictionary_path);
-			String token = "649e53eb-b6e2-4f32-9cfb-eac3549f7e92"; //propsRepo.read(dictionary_thesaurus);
-			
-			String fullUrl = new StringBuilder(uri).append(path).toString();
-			dictionaryResource = client.target(fullUrl).queryParam(dictionary_key, token);
-			System.out.println(dictionaryResource.getUri().toURL().toString());
-			
-			dictionaryResponse = dictionaryResource.path(path).request().accept(MediaType.APPLICATION_XML).get();
-			
-//			if (LOG.isDebugEnabled())
-//				LOG.debug(dictionaryResponse.getEntity().toString());
-			
-			System.out.println(dictionaryResponse + " " + dictionaryResponse.getLength());
+
+			String uri = propsRepo.read(dictionary_uri);
+			String path = propsRepo.read(dictionary_path) + noun;
+			String token = propsRepo.read(dictionary_thesaurus);
+
+			dictionaryResource = client.target(uri);
+
+			dictionaryResponse = dictionaryResource.queryParam(dictionary_key, token).path(path).request()
+					.accept(MediaType.APPLICATION_XML).get();
+
+			if (LOG.isDebugEnabled())
+				LOG.debug(dictionaryResource.getUri().toURL().toString());
+
+			MultivaluedMap<String, Object> headers = dictionaryResponse.getHeaders();
+			headers.remove(HttpHeaders.CONTENT_TYPE);
+			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
+
+			if (LOG.isInfoEnabled())
+				LOG.info("Headers: " + headers.toString());
+
+			if (LOG.isDebugEnabled())
+				LOG.debug(dictionaryResponse.toString() + " Content length:" + dictionaryResponse.getLength());
+
 		} catch (Exception e) {
 			throw new DictionaryException(e);
 		}
 		return dictionaryResponse;
 	}
+
+	public static Set<Serializable> getSynonyms(EntryListType _dictionaryResponse, String word, String pos) {
+		List<EntryType> entries = _dictionaryResponse.getEntry();
+
+		Set<Serializable> synSet = new HashSet<>();
+		for (EntryType entry : entries) {
+			if (!word.equalsIgnoreCase(entry.getTerm().getHw()) || !pos.equalsIgnoreCase(entry.getFl()))
+				continue;
+
+			List<SensType> sensTypes = entry.getSens();
+			for (SensType sensType : sensTypes) {
+				Syn _synCol = sensType.getSyn();
+				synSet.addAll(_synCol.getContent());
+			}
+		}
+
+		return synSet;
+	}
 	
+	public static Set<Serializable> getRelated(EntryListType _dictionaryResponse, String word, String pos) {
+		List<EntryType> entries = _dictionaryResponse.getEntry();
+
+		Set<Serializable> relSet = new HashSet<>();
+		for (EntryType entry : entries) {
+			if (!word.equalsIgnoreCase(entry.getTerm().getHw()) || !pos.equalsIgnoreCase(entry.getFl()))
+				continue;
+
+			List<SensType> sensTypes = entry.getSens();
+			for (SensType sensType : sensTypes) {
+				Rel _relCol = sensType.getRel();
+				relSet.addAll(_relCol.getContent());
+			}
+		}
+
+		return relSet;
+	}
+
 }

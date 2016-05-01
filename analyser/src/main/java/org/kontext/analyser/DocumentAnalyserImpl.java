@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.UUID;
 
 import org.kontext.analyser.context.Context;
+import org.kontext.analyser.dictionary.Dictionary;
+import org.kontext.analyser.dictionary.DictionaryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
@@ -89,6 +91,8 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 
 	private void analyseSentence(CoreMap sentence) {
 		List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
+		Dictionary dictionary = DictionaryImpl.getInstance();
+		
 		for (CoreLabel token : tokens) {
 			String word = token.get(TextAnnotation.class);
 			String pos = token.get(PartOfSpeechAnnotation.class);
@@ -99,6 +103,7 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 			
 			if (Noun.isNoun(pos) && NAMED_ENTITY_TAG_O.equals(ne)) {
 				docContext.getNouns().add(word);
+				docContext.getSynonyms().addAll(dictionary.getSynonymsForNoun(word));
 			}
 		}
 	}
