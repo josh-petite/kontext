@@ -8,9 +8,9 @@
 
 package org.kontext.analyser.dictionary.jaxb;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -46,7 +46,7 @@ public class SynType {
 
     @XmlElementRef(name = "it", type = JAXBElement.class, required = false)
     @XmlMixed
-    protected List<Serializable> content;
+    protected List<String> content;
 
     /**
      * Gets the value of the content property.
@@ -71,9 +71,9 @@ public class SynType {
      * 
      * 
      */
-    public List<Serializable> getContent() {
+    public List<String> getContent() {
         if (content == null) {
-            content = new ArrayList<Serializable>();
+            content = new ArrayList<>();
         }
         return this.content;
     }

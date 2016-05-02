@@ -11,6 +11,9 @@ import java.util.UUID;
 import org.kontext.analyser.context.Context;
 import org.kontext.analyser.dictionary.Dictionary;
 import org.kontext.analyser.dictionary.DictionaryImpl;
+import org.kontext.analyser.dictionary.exception.DictionaryException;
+import org.kontext.analyser.exception.DocumentAnalyserException;
+import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
@@ -21,6 +24,7 @@ import org.slf4j.LoggerFactory;
 import com.datastax.driver.core.BoundStatement;
 import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.exceptions.InvalidTypeException;
 
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
@@ -45,11 +49,13 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 
 	private static Session session;
 	private Context docContext;
+	
+	private static String todaysDate;
 
 	static {
 		datasourceMgr = new CassandraManager(propsRepo);
 		session = (Session) datasourceMgr.getConnection();
-		
+		todaysDate = DocumentRepositoryImpl.getTodaysDate();
 		init();
 	}
 
@@ -68,7 +74,7 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 	}
 
 	@Override
-	public void analyse() {
+	public void analyse() throws DocumentAnalyserException {
 		if (LOG.isDebugEnabled())
 			LOG.debug("Id : " + docId + " | Length of the document : " + sentences.size());
 
@@ -89,7 +95,7 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 			LOG.debug(docContext.toString());
 	}
 
-	private void analyseSentence(CoreMap sentence) {
+	private void analyseSentence(CoreMap sentence) throws DocumentAnalyserException {
 		List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
 		Dictionary dictionary = DictionaryImpl.getInstance();
 		
@@ -105,6 +111,14 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 				docContext.getNouns().add(word);
 				docContext.getSynonyms().addAll(dictionary.getSynonymsForNoun(word));
 			}
+		}
+		
+		try {
+			persistContext();
+		} catch (DictionaryException e) {
+			if (LOG.isErrorEnabled())
+				LOG.error(e.getMessage());
+			throw new DocumentAnalyserException(e);
 		}
 	}
 	
@@ -125,6 +139,22 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 		PreparedStatement statement = session.prepare(cql);
 		BoundStatement boundStatement = new BoundStatement(statement);
 		session.execute(boundStatement.bind());
+	}
+	
+	private void persistContext() throws DictionaryException {
+		String cqlMask = "INSERT INTO %s.%s "
+				+ "(id, nouns, synonyms, create_date) VALUES "
+				+ "(?, ?, ?, toTimestamp('" + todaysDate + "'));";
+		String cql = String.format(cqlMask, propsRepo.read(cassandra_keyspace), propsRepo.read(cassandra_context_table));
+		
+		PreparedStatement statement = session.prepare(cql);
+		BoundStatement boundStatement = new BoundStatement(statement);
+		try {
+			session.execute(boundStatement.bind(docContext.getId(), docContext.getNouns(), docContext.getSynonyms()));
+		} catch (InvalidTypeException ex) {
+			LOG.error("Context creation failed for document : " + docId.toString());
+			throw new DictionaryException(DictionaryException.dictionary_response_interleaved_with_serializables);
+		}
 	}
 	
 	@Override

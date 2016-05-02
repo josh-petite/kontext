@@ -6,6 +6,7 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.dict
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.dictionary_uri;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -17,6 +18,7 @@ import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
+import javax.xml.bind.JAXBElement;
 
 import org.kontext.analyser.dictionary.exception.DictionaryException;
 import org.kontext.analyser.dictionary.jaxb.EntryListType;
@@ -71,10 +73,11 @@ public class DictionaryHelper {
 		return dictionaryResponse;
 	}
 
-	public static Set<Serializable> getSynonyms(EntryListType _dictionaryResponse, String word, String pos) {
+	public static Set<String> getSynonyms(EntryListType _dictionaryResponse, String word, String pos) {
 		List<EntryType> entries = _dictionaryResponse.getEntry();
-
-		Set<Serializable> synSet = new HashSet<>();
+		Set<String> synSet = new HashSet<>();
+		
+		// Only one entry type is present.
 		for (EntryType entry : entries) {
 			if (!word.equalsIgnoreCase(entry.getTerm().getHw()) || !pos.equalsIgnoreCase(entry.getFl()))
 				continue;
@@ -82,11 +85,24 @@ public class DictionaryHelper {
 			List<SensType> sensTypes = entry.getSens();
 			for (SensType sensType : sensTypes) {
 				Syn _synCol = sensType.getSyn();
-				synSet.addAll(_synCol.getContent());
+				
+				synSet.addAll(deRefXMLRefs(_synCol));
 			}
 		}
 
 		return synSet;
+	}
+	
+	private static Set<String> deRefXMLRefs(Syn _syncol) {
+		Set<String> _syns = new HashSet<String>();
+		for (Serializable _serializable : _syncol.getContent()) {
+			if (_serializable instanceof JAXBElement)
+				continue;
+			
+			String[] syns = ((String) _serializable).replaceAll("\\(|\\)", "").split(",");
+			_syns.addAll(Arrays.asList(syns));
+		}
+		return _syns;
 	}
 	
 	public static Set<Serializable> getRelated(EntryListType _dictionaryResponse, String word, String pos) {

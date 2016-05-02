@@ -38,7 +38,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 		init();
 	}
 	
-	private static String getTodaysDate() {
+	public static String getTodaysDate() {
 		return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 	}
 

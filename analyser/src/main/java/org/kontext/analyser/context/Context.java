@@ -1,6 +1,5 @@
 package org.kontext.analyser.context;
 
-import java.io.Serializable;
 import java.util.Set;
 import java.util.UUID;
 
@@ -11,7 +10,7 @@ public class Context {
 	private final UUID id;
 
 	private final Set<String> nouns;
-	private final Set<Serializable> synonyms;
+	private final Set<String> synonyms;
 
 	private final Set<Association> associations;
 	private final Set<Context> contexts;
@@ -40,7 +39,7 @@ public class Context {
 		return nouns;
 	}
 
-	public Set<Serializable> getSynonyms() {
+	public Set<String> getSynonyms() {
 		return synonyms;
 	}
 
@@ -61,7 +60,7 @@ public class Context {
 		private String name;
 		private UUID id;
 		private Set<String> nouns;
-		private Set<Serializable> synonyms;
+		private Set<String> synonyms;
 		private Set<Association> associations;
 		private Set<Content> contents;
 		private Set<Context> contexts;
@@ -83,7 +82,7 @@ public class Context {
 			return this;
 		}
 
-		public ContextBuilder synonyms(Set<Serializable> synonyms) {
+		public ContextBuilder synonyms(Set<String> synonyms) {
 			this.synonyms = synonyms;
 			return this;
 		}

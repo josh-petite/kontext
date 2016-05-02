@@ -12,7 +12,7 @@ public interface Dictionary {
 	 * @param noun
 	 * @return Set of synonyms
 	 */
-	Set<Serializable> getSynonymsForNoun(String noun);
+	Set<String> getSynonymsForNoun(String noun);
 	
 	/**
 	 * Get the synonyms for the word as a particular POS
@@ -20,7 +20,7 @@ public interface Dictionary {
 	 * @param pos
 	 * @return
 	 */
-	Set<Serializable> getSynonyms(String word, String pos);
+	Set<String> getSynonyms(String word, String pos);
 	
 	/**
 	 * Get synonyms for a set of nouns

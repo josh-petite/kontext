@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.concurrent.RecursiveAction;
 
 import org.apache.commons.lang.SerializationUtils;
+import org.kontext.analyser.exception.DocumentAnalyserException;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.slf4j.Logger;
@@ -45,7 +46,11 @@ public class DocumentAnalyserAction extends RecursiveAction {
 			LOG.debug("Number of documents : " + length);
 
 		if (length <= threshold) {
-			analyse();
+			try {
+				analyse();
+			} catch (DocumentAnalyserException e) {
+				LOG.error("Document Analysis failed for " + length + " documents", e);
+			}
 			return;
 		}
 
@@ -56,7 +61,7 @@ public class DocumentAnalyserAction extends RecursiveAction {
 		invokeAll(new DocumentAnalyserAction(partition, firstSplit), new DocumentAnalyserAction(partition, secondSplit));
 	}
 
-	private void analyse() {
+	private void analyse() throws DocumentAnalyserException {
 		if(LOG.isDebugEnabled())
 			LOG.debug("Number of documents to be analysed - " + documents.size());
 		
@@ -67,7 +72,7 @@ public class DocumentAnalyserAction extends RecursiveAction {
 			
 			@SuppressWarnings("unchecked")
 			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(byteBuffer.array());
-			DocumentAnalyserImpl docAnalyser = new DocumentAnalyserImpl(document.getUUID(id), sentences);
+			DocumentAnalyser docAnalyser = new DocumentAnalyserImpl(document.getUUID(id), sentences);
 			docAnalyser.analyse();
 		}
 	}

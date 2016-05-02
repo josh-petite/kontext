@@ -25,19 +25,19 @@ public class DictionaryImpl implements Dictionary {
 	}
 	
 	@Override
-	public Set<Serializable> getSynonymsForNoun(String _noun) {
+	public Set<String> getSynonymsForNoun(String _noun) {
 		return getSynonyms(_noun, noun);
 	}
 	
 	@Override
-	public Set<Serializable> getSynonyms(String word, String pos) {
+	public Set<String> getSynonyms(String word, String pos) {
 		Response dictionaryResponse = null;
 		EntryListType _dictionaryReponse = null;
 		
 		try {
 			dictionaryResponse = DictionaryHelper.getDictionaryResponse(word);
 		} catch (DictionaryException e) {
-			e.printStackTrace();
+			LOG.error("Dictionary lookup failed. ", e);
 		}
 		
 		if (dictionaryResponse.getStatus() != 200) {

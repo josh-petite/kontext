@@ -1,14 +1,13 @@
 package org.kontext.analyser.dictionary;
 
-import static org.kontext.analyser.ContextAnalyserConstants.*;
+import static org.kontext.analyser.ContextAnalyserConstants.noun;
 
-import java.io.Serializable;
 import java.util.Set;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeClass;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
+import org.testng.annotations.Test;
 
 public class DictionaryImplTest {
 
@@ -25,14 +24,14 @@ public class DictionaryImplTest {
 
 	@Test
 	public void testGetSynonymsByType() {
-		Set<Serializable> _syns = dictionary.getSynonyms("house", noun);
+		Set<String> _syns = dictionary.getSynonyms("house", noun);
 		Assert.assertNotNull(_syns);
 		Assert.assertFalse(_syns.isEmpty());
 	}
 	
 	@Test
 	public void testGetSynonyms() {
-		Set<Serializable> _syns = dictionary.getSynonymsForNoun("house");
+		Set<String> _syns = dictionary.getSynonymsForNoun("house");
 		Assert.assertNotNull(_syns);
 		Assert.assertFalse(_syns.isEmpty());
 	}
