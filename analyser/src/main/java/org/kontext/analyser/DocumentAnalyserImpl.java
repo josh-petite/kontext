@@ -91,6 +91,15 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 			dependencies.prettyPrint();
 		}
 		
+		// after analysing sentences in a document, persist the document with the words and synonyms associated to it.
+		try {
+			persistContext();
+		} catch (DictionaryException e) {
+			if (LOG.isErrorEnabled())
+				LOG.error(e.getMessage());
+			throw new DocumentAnalyserException(e);
+		}
+		
 		if(LOG.isDebugEnabled())
 			LOG.debug(docContext.toString());
 	}
@@ -112,14 +121,7 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 				docContext.getSynonyms().addAll(dictionary.getSynonymsForNoun(word));
 			}
 		}
-		
-		try {
-			persistContext();
-		} catch (DictionaryException e) {
-			if (LOG.isErrorEnabled())
-				LOG.error(e.getMessage());
-			throw new DocumentAnalyserException(e);
-		}
+
 	}
 	
 	private static void init() {
