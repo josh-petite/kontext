@@ -1,6 +1,6 @@
 <configuration debug="true">
 
-	<property name="LOGGER_HOME" value="/home/vikram/Projects/Kontext/kontext/logs/" />
+	<property name="LOGGER_HOME" value="logs/" />
 
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
