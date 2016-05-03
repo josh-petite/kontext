@@ -31,6 +31,18 @@
 				<artifactId>jacoco-maven-plugin</artifactId>
 				<version>0.7.6.201602180812</version>
 				<configuration>
+					<fileSets>
+						<fileSet>
+							<directory>${project.build.directory}</directory>
+							<includes>
+								<include>jacoco.exec</include>
+							</includes>
+						</fileSet>
+					</fileSets>
+					<destFile>${project.parent.build.directory}/jacoco-merged.exec</destFile>
+					<skip>false</skip>
+					<dataFile>${project.parent.build.directory}/jacoco-merged.exec</dataFile>
+					<outputDirectory>${project.parent.build.directory}/jacoco/</outputDirectory>
 				</configuration>
 				<executions>
 					<execution>
@@ -51,10 +63,12 @@
 						<goals>
 							<goal>check</goal>
 						</goals>
-						<configuration>
-							<rules>
-							</rules>
-						</configuration>
+					</execution>
+					<execution>
+						<id>default-merge</id>
+						<goals>
+							<goal>merge</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
