@@ -42,7 +42,7 @@
 					<destFile>${project.parent.build.directory}/jacoco-merged.exec</destFile>
 					<skip>false</skip>
 					<dataFile>${project.parent.build.directory}/jacoco-merged.exec</dataFile>
-					<outputDirectory>${project.parent.build.directory}/jacoco/</outputDirectory>
+					<outputDirectory>${project.parent.build.directory}/jacoco/${project.name}</outputDirectory>
 				</configuration>
 				<executions>
 					<execution>
