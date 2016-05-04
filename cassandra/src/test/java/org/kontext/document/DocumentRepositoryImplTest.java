@@ -45,8 +45,8 @@ public class DocumentRepositoryImplTest {
 	
 	@Test
 	public void testRead() {
-		Date partition = new Date(System.currentTimeMillis());
-		List<Row> allDocuments = docsRepo.read(partition).all();
+		
+		List<Row> allDocuments = docsRepo.read(docsRepo.getAllPartitions().get(0)).all();
 		System.out.println("Size of the result set = " + allDocuments.size());
 		Assert.assertFalse(allDocuments.isEmpty());
 	}

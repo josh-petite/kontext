@@ -21,10 +21,10 @@ import java.util.UUID;
 public class DocumentRepositoryImpl implements DocumentRepository {
 	private final PropertiesRepository propertiesRepository;
 	private final DataSourceManager dataSourceManager;
-	
+
 	/* Batch = Date */
 	private final String todaysDate;
-	
+
 	private String documentsKeyspace;
 	private String documentsTable;
 	private BoundStatement storeDocumentBoundStatement;
@@ -37,7 +37,7 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 		todaysDate = getTodaysDate();
 		init();
 	}
-	
+
 	public static String getTodaysDate() {
 		return new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 	}
@@ -53,15 +53,19 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 		ensureDocumentTableExistence();
 
 		String cqlMask = "INSERT INTO %s (id, html, raw_text, link_count, create_date) "
-				+ "VALUES (?, ?, ?, ?, toTimestamp('" + todaysDate + "'));";
+							+ "VALUES (?, ?, ?, ?, toTimestamp('" + todaysDate + "'));";
 		PreparedStatement statement = session.prepare(String.format(cqlMask, documentsTable));
 		storeDocumentBoundStatement = new BoundStatement(statement);
 	}
 
 	private void ensureDocumentTableExistence() {
 		String cqlMask = "CREATE TABLE IF NOT EXISTS %s.%s "
-				+ "(id UUID, html text, raw_text text, link_count int, create_date timestamp, "
-				+ "parsed_out text, PRIMARY KEY (create_date, id));";
+							+ "(id UUID, "
+							+ "html text, "
+							+ "raw_text text, "
+							+ "link_count int, "
+							+ "create_date timestamp, "
+							+ "parsed_out text, PRIMARY KEY (create_date, id));";
 		String cql = String.format(cqlMask, documentsKeyspace, documentsTable);
 
 		PreparedStatement statement = session.prepare(cql);
@@ -104,12 +108,13 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 */
 	@Override
 	public ResultSet read(Date partition, int limit) {
-		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable).limit(limit);
-		Session session = (Session) dataSourceManager.getConnection();
+		Statement select = QueryBuilder.select()
+										.from(documentsKeyspace, documentsTable)
+										.limit(limit);
 		ResultSet results = session.execute(select);
 		return results;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -120,18 +125,18 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 */
 	@Override
 	public ResultSet read(Date createDate) {
-		Statement select = QueryBuilder.select().from(documentsKeyspace, documentsTable);
-		Session session = (Session) dataSourceManager.getConnection();
+		Statement select = QueryBuilder.select()
+										.from(documentsKeyspace, documentsTable)
+										.where()
+										.and(QueryBuilder.eq(create_date, createDate));
 		ResultSet results = session.execute(select);
 		return results;
 	}
 
 	@Override
 	public void purge(Date partition) {
-		PreparedStatement statement = session
-				.prepare(String.format("TRUNCATE %s.%s;", documentsKeyspace, documentsTable));
-		BoundStatement boundStatement = new BoundStatement(statement);
-		session.execute(boundStatement.bind());
+		Statement purge = QueryBuilder.truncate(documentsKeyspace, documentsTable);
+		session.execute(purge);
 	}
 
 	@Override
@@ -150,10 +155,12 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	 */
 	@Override
 	public long count(Date partition) throws DocumentRepositoryException {
-		PreparedStatement statement = session
-				.prepare(String.format("SELECT count(*) from %s.%s WHERE create_date = ?;", documentsKeyspace, documentsTable));
-		BoundStatement boundStatement = new BoundStatement(statement);
-		ResultSet countRS = session.execute(boundStatement.bind(partition));
+		Statement statement = QueryBuilder.select()
+											.countAll()
+											.from(documentsKeyspace, documentsTable)
+											.where()
+											.and(QueryBuilder.eq(create_date, partition));
+		ResultSet countRS = session.execute(statement);
 		Row countRow = countRS.one();
 
 		if (countRow == null)
@@ -164,16 +171,17 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
 	@Override
 	public List<Date> getAllPartitions() {
-		PreparedStatement statement = session
-				.prepare(String.format("SELECT distinct create_date from %s.%s;", documentsKeyspace, documentsTable));
-		BoundStatement boundStatement = new BoundStatement(statement);
-		ResultSet countRS = session.execute(boundStatement.bind());
-		
+		Statement statement = QueryBuilder.select()
+											.distinct()
+											.column(create_date)
+											.from(documentsKeyspace, documentsTable);
+		ResultSet countRS = session.execute(statement);
+
 		List<Date> createDates = new ArrayList<>();
 		for (Row row : countRS.all()) {
 			createDates.add(row.getTimestamp(create_date));
 		}
-		
+
 		return createDates;
 	}
 }

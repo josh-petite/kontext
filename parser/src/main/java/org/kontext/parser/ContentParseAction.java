@@ -1,6 +1,12 @@
 package org.kontext.parser;
 
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_document_table;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.cassandra_keyspace;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.create_date;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.id;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.parsed_out;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.parser_threshold;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.raw_text;
 
 import java.io.Serializable;
 import java.nio.ByteBuffer;
@@ -16,10 +22,10 @@ import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.datastax.driver.core.BoundStatement;
-import com.datastax.driver.core.PreparedStatement;
 import com.datastax.driver.core.Row;
 import com.datastax.driver.core.Session;
+import com.datastax.driver.core.Statement;
+import com.datastax.driver.core.querybuilder.QueryBuilder;
 
 import edu.stanford.nlp.ling.CoreAnnotations.NamedEntityTagAnnotation;
 import edu.stanford.nlp.ling.CoreAnnotations.PartOfSpeechAnnotation;
@@ -47,7 +53,15 @@ public class ContentParseAction extends RecursiveAction {
 	private static final StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());;
 	private static Session session;
 	
+	private static String keySpace;
+	private static String documentsTable;
+	
 	private final String parseString;
+	
+	static {
+		keySpace = propsRepo.read(cassandra_keyspace);
+		documentsTable = propsRepo.read(cassandra_document_table);
+	}
 
 	public ContentParseAction(List<Row> documents) {
 		this.documents = documents;
@@ -111,15 +125,15 @@ public class ContentParseAction extends RecursiveAction {
 		parseSentences(sentences);
 	}
 
-	private void persistParseOut(UUID id, Date createDate, List<CoreMap> sentences) {
+	private void persistParseOut(UUID _id, Date createDate, List<CoreMap> sentences) {
 		byte[] parsedOut = SerializationUtils.serialize((Serializable) sentences);
 		
-		String cqlMask = "UPDATE %s.%s SET %s = ? where create_date = ? and id = ?; ";
-		String cql = String.format(cqlMask, propsRepo.read(cassandra_keyspace), propsRepo.read(cassandra_document_table), parsed_out);
-
-		PreparedStatement statement = session.prepare(cql);
-		BoundStatement boundStatement = new BoundStatement(statement);
-		session.execute(boundStatement.bind(ByteBuffer.wrap(parsedOut), createDate, id));
+		Statement statement = QueryBuilder.update(keySpace, documentsTable)
+											.with(QueryBuilder.set(parsed_out, ByteBuffer.wrap(parsedOut)))
+											.where(QueryBuilder.eq(create_date, createDate))
+											.and(QueryBuilder.eq(id, _id));
+		
+		session.execute(statement);
 	}
 
 	private void parseSentences(List<CoreMap> sentences) {
