@@ -1,6 +1,15 @@
 package org.kontext.crawler.exception;
 
 public class ContentCrawlerException extends Exception {
+<<<<<<< HEAD
+
+	private static final long serialVersionUID = 1L;
+	
+	public ContentCrawlerException(String message) {
+		super(message);
+	}
+
+=======
 	
 	private static final long serialVersionUID = 1L;
 
@@ -8,6 +17,7 @@ public class ContentCrawlerException extends Exception {
 		super(message);
 	}
 	
+>>>>>>> 0749298e21d74fba2ccde7fa627f3e2b5ab6ec01
 	public ContentCrawlerException(String message, Throwable t) {
 		super(message, t);
 	}

@@ -1,23 +1,24 @@
 package org.kontext.crawler;
 
-import org.kontext.crawler.exception.ContentCrawlerException;
+import java.util.Collection;
 
 public interface ContentCrawler {
-	
+
 	/**
-	 * Autonomous search. Starting shall initiate crawling on
-	 * bunch of sites and random corpus is built.
+	 * Crawls a given crawlable and produces a crawled object which has the associated data.
+	 * The content shall be persisted into a datasource.
 	 * 
+	 * @param crawlable
 	 * @throws Exception
 	 */
-    void crawl() throws ContentCrawlerException;
-   
-    /**
-     * Consumes the criteria, runs search and crawls search resutlts and
-     * persists them.
-     * 
-     * @param searchCriteria
-     * @throws ContentCrawlerException
-     */
-    void crawl(String searchCriteria) throws ContentCrawlerException;
+	void crawl(Crawlable crawlable) throws ContentCrawlerException;
+	
+	/**
+	 * Crawls a given collection of crawlables, retrieves crawled content and persists into the
+	 * datasource.
+	 * 
+	 * @param crawlables
+	 * @throws Exception
+	 */
+	void crawl(Collection<? extends Crawlable> crawlables) throws ContentCrawlerException;
 }
