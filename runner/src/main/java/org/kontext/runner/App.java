@@ -8,7 +8,7 @@ import org.kontext.cassandra.documents.DocumentRepository;
 import org.kontext.cassandra.modules.DataSourceManagerModule;
 import org.kontext.cassandra.modules.DocumentRepositoryModule;
 import org.kontext.common.modules.PropertiesRepositoryModule;
-import org.kontext.crawler.Controller;
+import org.kontext.crawler.ContentCrawler;
 import org.kontext.crawler.modules.ControllerModule;
 
 import java.util.ArrayList;
@@ -28,8 +28,8 @@ public class App {
         DocumentRepository documentRepository = injector.getInstance(DocumentRepository.class);
 
         try {
-            Controller c = injector.getInstance(Controller.class);
-            c.start();
+            ContentCrawler c = injector.getInstance(ContentCrawler.class);
+            c.crawl();
         } catch (Exception e) {
             e.printStackTrace();
         }

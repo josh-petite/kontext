@@ -1,5 +1,8 @@
 package org.kontext.parser;
 
+import java.text.ParseException;
+import java.util.Date;
+
 import org.kontext.cassandra.documents.DocumentRepository;
 import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
@@ -48,7 +51,7 @@ public class ContentParserTest {
 	}
 	
 	@Test
-	public void testRunFromCassandra() throws ContentParserException {
-		cParser.parse();
+	public void testRunFromCassandra() throws ContentParserException, ParseException {
+		cParser.parse(new Date(1461542400000L));
 	}
 }

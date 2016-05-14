@@ -3,7 +3,7 @@ package org.kontext.analyser;
 import org.kontext.analyser.context.Context;
 import org.kontext.analyser.exception.DocumentAnalyserException;
 
-public interface DocumentAnalyser {
+public interface DocumentAnalyser extends Runnable {
 
 	/**
 	 * Consumes the parsed out in every document, analyses the parsed documenht,

@@ -24,6 +24,8 @@ public class ContextAnalyserAction extends RecursiveAction {
 	private final int length;
 	private final List<Date> partitions;
 
+	private static int threadCount;
+
 	private static DocumentRepository docRepo;
 	private static DataSourceManager datasourceManager;
 
@@ -45,26 +47,30 @@ public class ContextAnalyserAction extends RecursiveAction {
 
 	@Override
 	protected void compute() {
-
+		incrementThreadCount();
+		
+		if (LOG.isInfoEnabled())
+			LOG.info("Number of partitions passed : " + length + " | Thread count : " + threadCount);
+		
 		if (length <= partitionThreshold) {
 			analyse();
 			return;
 		}
-
+		
 		List<Date> firstHalf = partitions.subList(0, length / 2);
 		List<Date> secondHalf = partitions.subList(length / 2, length);
 
 		invokeAll(new ContextAnalyserAction(firstHalf), new ContextAnalyserAction(secondHalf));
+	}
+	
+	private synchronized void incrementThreadCount() {
+		threadCount ++;
 	}
 
 	/*
 	 * Break the partition
 	 */
 	private void analyse() {
-
-		if (LOG.isDebugEnabled())
-			LOG.debug("Number of partitions passed : " + length);
-
 		DocumentAnalyserAction docAnalyseAction = null;
 		for (Date partition : partitions) {
 			List<Row> documents = docRepo.read(partition).all();

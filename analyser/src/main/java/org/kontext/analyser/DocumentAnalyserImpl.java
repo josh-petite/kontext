@@ -37,7 +37,7 @@ import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations.TreeAnnotation;
 import edu.stanford.nlp.util.CoreMap;
 
-public class DocumentAnalyserImpl implements DocumentAnalyser {
+public class DocumentAnalyserImpl extends Thread implements DocumentAnalyser {
 
 	private static final Logger LOG = LoggerFactory.getLogger(DocumentAnalyserImpl.class);
 	private static final PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
@@ -72,23 +72,34 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 							.contexts(new HashSet<>())
 							.build();
 	}
+	
+	@Override
+	public void run() {
+		try {
+			analyse();
+		} catch (DocumentAnalyserException e) {
+			LOG.error("Failed during analyse of document - " + docId, e);
+		}
+	}
 
 	@Override
 	public void analyse() throws DocumentAnalyserException {
-		if (LOG.isDebugEnabled())
-			LOG.debug("Id : " + docId + " | Length of the document : " + sentences.size());
+		if (LOG.isInfoEnabled())
+			LOG.info("Id : " + docId + " | Length of the document : " + sentences.size());
 
 		for (CoreMap sentence : sentences) {
 			if (LOG.isDebugEnabled())
 				LOG.debug(sentence.toString());
 
 			analyseSentence(sentence);
-
-			Tree tree = sentence.get(TreeAnnotation.class);
-			tree.printLocalTree();
-
-			SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
-			dependencies.prettyPrint();
+			
+			if (LOG.isDebugEnabled()) {
+				Tree tree = sentence.get(TreeAnnotation.class);
+				tree.printLocalTree();
+	
+				SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
+				dependencies.prettyPrint();
+			}
 		}
 		
 		// after analysing sentences in a document, persist the document with the words and synonyms associated to it.
@@ -100,8 +111,8 @@ public class DocumentAnalyserImpl implements DocumentAnalyser {
 			throw new DocumentAnalyserException(e);
 		}
 		
-		if(LOG.isDebugEnabled())
-			LOG.debug(docContext.toString());
+		if(LOG.isInfoEnabled())
+			LOG.info(docContext.toString());
 	}
 
 	private void analyseSentence(CoreMap sentence) throws DocumentAnalyserException {

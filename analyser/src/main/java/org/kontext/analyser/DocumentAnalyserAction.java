@@ -20,6 +20,7 @@ import edu.stanford.nlp.util.CoreMap;
 
 public class DocumentAnalyserAction extends RecursiveAction {
 
+	private static int threadCount = 0;
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger LOG = LoggerFactory.getLogger(DocumentAnalyserAction.class);
@@ -42,9 +43,11 @@ public class DocumentAnalyserAction extends RecursiveAction {
 	
 	@Override
 	protected void compute() {
-		if (LOG.isDebugEnabled())
-			LOG.debug("Number of documents : " + length);
-
+		incrementThreadCount();
+		
+		if (LOG.isInfoEnabled())
+			LOG.info("Number of documents : " + length + " | Thread count : " + threadCount);
+		
 		if (length <= threshold) {
 			try {
 				analyse();
@@ -61,9 +64,14 @@ public class DocumentAnalyserAction extends RecursiveAction {
 		invokeAll(new DocumentAnalyserAction(partition, firstSplit), new DocumentAnalyserAction(partition, secondSplit));
 	}
 
+	private synchronized void incrementThreadCount() {
+		threadCount ++;
+	}
+
 	private void analyse() throws DocumentAnalyserException {
-		if(LOG.isDebugEnabled())
-			LOG.debug("Number of documents to be analysed - " + documents.size());
+		
+		if (LOG.isDebugEnabled())
+			LOG.debug("Number of documents for analysis : " + length + " | Thread count : " + threadCount);
 		
 		for (Row document : documents) {
 			ByteBuffer byteBuffer = document.getBytes(parsed_out);
@@ -73,7 +81,7 @@ public class DocumentAnalyserAction extends RecursiveAction {
 			@SuppressWarnings("unchecked")
 			List<CoreMap> sentences = (List<CoreMap>) SerializationUtils.deserialize(byteBuffer.array());
 			DocumentAnalyser docAnalyser = new DocumentAnalyserImpl(document.getUUID(id), sentences);
-			docAnalyser.analyse();
+			docAnalyser.run();
 		}
 	}
 

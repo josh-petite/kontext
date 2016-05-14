@@ -110,6 +110,8 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 	public ResultSet read(Date partition, int limit) {
 		Statement select = QueryBuilder.select()
 										.from(documentsKeyspace, documentsTable)
+										.where()
+										.and(QueryBuilder.eq(create_date, partition))
 										.limit(limit);
 		ResultSet results = session.execute(select);
 		return results;
@@ -184,4 +186,5 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
 		return createDates;
 	}
+
 }

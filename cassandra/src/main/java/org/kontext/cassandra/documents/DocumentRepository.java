@@ -11,7 +11,6 @@ public interface DocumentRepository {
 	
 	/**
 	 * Get all the rows for a given partition. 
-	 * TODO Right now, partitions have not been defined.
 	 * 
 	 * @return
 	 */

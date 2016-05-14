@@ -1,7 +1,7 @@
 package org.kontext.parser;
 
+import java.util.Date;
 import java.util.List;
-import java.util.concurrent.RecursiveAction;
 import org.kontext.cassandra.documents.DocumentRepository;
 import com.datastax.driver.core.Row;
 import com.google.inject.Inject;
@@ -16,15 +16,21 @@ public class ContentParserImpl extends ContentParser {
 
 	@Override
 	public void parse() {
-		List<Row> documents = docsRepo.read(null, 1).all();
-		RecursiveAction action = new ContentParseAction(documents);
-		action.invoke();
+		List<Date> partitions = docsRepo.getAllPartitions();
+		for (Date partition : partitions) {
+			parse(partition);
+		}
 	}
 
 	@Override
 	public void parse(String parseMe) {
-		RecursiveAction action = new ContentParseAction(parseMe);
-		action.invoke();
+		new ContentParseAction(parseMe).invoke();
+	}
+
+	@Override
+	public void parse(Date partition) {
+		List<Row> documents = docsRepo.read(partition).all();
+		new ContentParseAction(documents).invoke();
 	}
 
 }

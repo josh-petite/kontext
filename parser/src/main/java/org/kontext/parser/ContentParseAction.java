@@ -50,7 +50,7 @@ public class ContentParseAction extends RecursiveAction {
 	private List<Row> documents;
 	private int length;
 	
-	private static final StanfordCoreNLP pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());;
+	private static StanfordCoreNLP pipeline;
 	private static Session session;
 	
 	private static String keySpace;
@@ -58,17 +58,19 @@ public class ContentParseAction extends RecursiveAction {
 	
 	private final String parseString;
 	
+	private static int threadCount = 0;
+	
 	static {
 		keySpace = propsRepo.read(cassandra_keyspace);
 		documentsTable = propsRepo.read(cassandra_document_table);
+		pipeline = new StanfordCoreNLP(propsRepo.getAllProperties());
+		session = (Session) new CassandraManager(propsRepo).getConnection();
 	}
 
 	public ContentParseAction(List<Row> documents) {
 		this.documents = documents;
 		this.length = documents.size();
-		
 		this.parseString = null;
-		session = (Session) new CassandraManager(propsRepo).getConnection();
 	}
 
 	/*
@@ -80,8 +82,10 @@ public class ContentParseAction extends RecursiveAction {
 
 	@Override
 	protected void compute() {
-		if (LOG.isDebugEnabled())
-			LOG.debug("Number of documents : " + length);
+		incrementThreadCount();
+		
+		if (LOG.isInfoEnabled())
+			LOG.info("Number of documents : " + length + " | Thread count = " + threadCount);
 
 		if (parseString != null) {
 			parse(null, null, parseString);
@@ -98,6 +102,10 @@ public class ContentParseAction extends RecursiveAction {
 		List<Row> firstSplit = documents.subList(0, split);
 		List<Row> secondSplit = documents.subList(split, length);
 		invokeAll(new ContentParseAction(firstSplit), new ContentParseAction(secondSplit));
+	}
+
+	private static synchronized void incrementThreadCount() {
+		threadCount ++;
 	}
 
 	private void parse() {
@@ -122,7 +130,8 @@ public class ContentParseAction extends RecursiveAction {
 		if (id != null)
 			persistParseOut(id, createDate, sentences);
 		
-		parseSentences(sentences);
+		if (LOG.isDebugEnabled())
+			parseSentences(sentences);
 	}
 
 	private void persistParseOut(UUID _id, Date createDate, List<CoreMap> sentences) {
@@ -141,11 +150,13 @@ public class ContentParseAction extends RecursiveAction {
 			List<CoreLabel> tokens = sentence.get(TokensAnnotation.class);
 			parseSentence(tokens);
 
-			Tree tree = sentence.get(TreeAnnotation.class);
-			tree.printLocalTree();
-
-			SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
-			dependencies.prettyPrint();
+			if (LOG.isDebugEnabled()) {
+				Tree tree = sentence.get(TreeAnnotation.class);
+				tree.printLocalTree();
+	
+				SemanticGraph dependencies = sentence.get(CollapsedCCProcessedDependenciesAnnotation.class);
+				dependencies.prettyPrint();
+			}
 		}
 	}
 

@@ -61,11 +61,10 @@ public class DictionaryHelper {
 			headers.remove(HttpHeaders.CONTENT_TYPE);
 			headers.add(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
 
-			if (LOG.isInfoEnabled())
-				LOG.info("Headers: " + headers.toString());
-
-			if (LOG.isDebugEnabled())
+			if (LOG.isDebugEnabled()) {
+				LOG.debug("Headers: " + headers.toString());
 				LOG.debug(dictionaryResponse.toString() + " Content length:" + dictionaryResponse.getLength());
+			}
 
 		} catch (Exception e) {
 			throw new DictionaryException(e);
