@@ -2,6 +2,8 @@ package org.kontext.crawler;
 
 import java.util.Collection;
 
+import org.kontext.crawler.exception.ContentCrawlerException;
+
 public interface ContentCrawler {
 
 	/**

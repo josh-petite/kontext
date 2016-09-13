@@ -6,6 +6,9 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+
+import java.util.Collection;
+
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryConstants;
 import org.kontext.crawler.exception.ContentCrawlerException;
@@ -57,7 +60,14 @@ public class BasicController implements ContentCrawler {
     }
 
 	@Override
-	public void crawl(String searchCriteria) throws ContentCrawlerException {
-		throw new RuntimeException("Not implemented yet.");
+	public void crawl(Crawlable crawlable) throws ContentCrawlerException {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void crawl(Collection<? extends Crawlable> crawlables) throws ContentCrawlerException {
+		// TODO Auto-generated method stub
+		
 	}
 }
