@@ -59,11 +59,11 @@ public class BasicController implements ContentCrawler {
 		}
     }
 
-	@Override
-	public void crawl(Crawlable crawlable) throws ContentCrawlerException {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void crawl() throws ContentCrawlerException {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 	@Override
 	public void crawl(Collection<? extends Crawlable> crawlables) throws ContentCrawlerException {

@@ -11,4 +11,8 @@ public class ContentCrawlerException extends Exception {
 	public ContentCrawlerException(String message, Throwable t) {
 		super(message, t);
 	}
+
+	public ContentCrawlerException(Throwable t) {
+		super(t);
+	}
 }

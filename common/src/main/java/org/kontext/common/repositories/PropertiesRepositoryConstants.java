@@ -39,5 +39,10 @@ public class PropertiesRepositoryConstants {
 	public static final String dictionary_uri = "dictionary_uri";
 	public static final String dictionary_path = "dictionary_path";
 	public static final String dictionary_key = "key";
-
+	
+	// Wiki properties
+	public static final String wiki_uri = "wiki_uri";
+	public static final String wiki_search_action = "wiki_search_action";
+	public static final String wiki_search_action_value = "wiki_search_action_value";
+	public static final String wiki_search_param_search = "wiki_search_param_search";
 }

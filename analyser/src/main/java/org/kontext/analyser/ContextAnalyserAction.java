@@ -17,6 +17,14 @@ import org.slf4j.LoggerFactory;
 
 import com.datastax.driver.core.Row;
 
+/**
+ * ContextAnalyserAction class defines how the analysis action is split
+ * into blocks of smaller work. The algorithm dictating the split is defined
+ * in the compute method this class implements.
+ * 
+ * @author vikram
+ *
+ */
 public class ContextAnalyserAction extends RecursiveAction {
 
 	private static final long serialVersionUID = 1L;
