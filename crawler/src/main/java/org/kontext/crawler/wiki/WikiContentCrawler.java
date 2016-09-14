@@ -7,7 +7,6 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki
 
 import java.util.Collection;
 
-import javax.json.JsonObject;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.WebTarget;
@@ -15,9 +14,6 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.util.EntityUtils;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
