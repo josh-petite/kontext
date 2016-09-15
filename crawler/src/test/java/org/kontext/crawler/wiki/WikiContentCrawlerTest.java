@@ -1,6 +1,5 @@
 package org.kontext.crawler.wiki;
 
-import org.kontext.cassandra.documents.DocumentRepository;
 import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
