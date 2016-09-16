@@ -1,11 +1,23 @@
 package org.kontext.crawler.wiki;
 
-import static org.kontext.common.repositories.PropertiesRepositoryConstants.*;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_action;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_action;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_format;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_format_value;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_prop;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_prop_value;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvlimit;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvlimit_value;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvprop;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvprop_value;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_titles;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_action;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_param_search;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_uri;
 
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.Map;
 import java.util.Set;
 
 import javax.ws.rs.client.Client;
@@ -19,6 +31,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.kontext.cassandra.documents.DocumentRepositoryImpl;
+import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
 import org.kontext.common.repositories.PropertiesRepositoryImpl;
 import org.kontext.crawler.ContentCrawler;
@@ -26,12 +40,19 @@ import org.kontext.crawler.ContentCrawlerHelper;
 import org.kontext.crawler.CrawlSource;
 import org.kontext.crawler.Crawlable;
 import org.kontext.crawler.exception.ContentCrawlerException;
+import org.kontext.data.DataSourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import info.bliki.wiki.filter.PlainTextConverter;
+import info.bliki.wiki.model.WikiModel;
 
 public class WikiContentCrawler implements ContentCrawler {
 
 	private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getPropsRepo();
+	private static DataSourceManager datasourceManager;
+	private static DocumentRepositoryImpl docRepo;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(WikiContentCrawler.class);
 	private static final Object WIKI_REVISIONS = "revisions";
 	private static final String WIKI_CONTENT = "*";
@@ -45,7 +66,12 @@ public class WikiContentCrawler implements ContentCrawler {
 	private JSONArray searchResultURLs;
 	private JSONArray searchResultContents;
 	
+	private final WikiModel wikiModel = new WikiModel("https://www.mywiki.com/wiki/${image}",
+			"https://www.mywiki.com/wiki/${title}");
+	
 	public WikiContentCrawler(Crawlable crawlable) {
+		datasourceManager = new CassandraManager(propsRepo);
+		docRepo = new DocumentRepositoryImpl(propsRepo, datasourceManager);
 		this.crawlable = (WikiCrawlable) crawlable;
 	}
 
@@ -112,10 +138,10 @@ public class WikiContentCrawler implements ContentCrawler {
 			String title = propsRepo.read(wiki_query_titles);
 			
 			wikiSearchResource = client.target(uri);
-			
-			while (titles.iterator().hasNext()) {
+			Iterator<?> titlesIter = titles.iterator();
+			while (titlesIter.hasNext()) {
 				
-				String _nextTitle = (String) titles.iterator().next();
+				String _nextTitle = (String) titlesIter.next();
 				wikiSearchResponse = wikiSearchResource
 						.queryParam(action, searchQueryValue)
 						.queryParam(prop, propValue)
@@ -127,14 +153,15 @@ public class WikiContentCrawler implements ContentCrawler {
 						.accept(MediaType.APPLICATION_JSON)
 						.get();
 				
+				if (LOG.isDebugEnabled())
+					LOG.debug(wikiSearchResource.getUri().toURL().toString());
+				
 				String _jsonResponse = wikiSearchResponse.readEntity(String.class);
 				JSONObject jsonResponse = (JSONObject) parser.parse(_jsonResponse);
 				String contentWithMarkup = extractMediaWikiMarkedupContent(jsonResponse);
 				String plainContent = removeMediaWikiMarkup(contentWithMarkup);
+				docRepo.storeDocument(null, plainContent, 1);
 			}
-
-			if (LOG.isDebugEnabled())
-				LOG.debug(wikiSearchResource.getUri().toURL().toString());
 
 			MultivaluedMap<String, Object> headers = wikiSearchResponse.getHeaders();
 
@@ -148,11 +175,17 @@ public class WikiContentCrawler implements ContentCrawler {
 			throw new ContentCrawlerException(e);
 		}
 
-		return null;	
+		return stats;	
 	}
 
-	private String removeMediaWikiMarkup(String contentWithMarkup) {
-		return contentWithMarkup;
+	/*
+	 * For the given text in MediaWiki markup, extract the corresponding plain text.
+	 */
+	private String removeMediaWikiMarkup(String contentWithMarkup) throws IOException {
+		String plainStr = wikiModel.render(new PlainTextConverter(), contentWithMarkup);
+		if (LOG.isDebugEnabled())
+			LOG.debug("Plain content - without markup " + plainStr);
+		return plainStr;
 	}
 
 	/*	JSON Structure:
@@ -173,6 +206,7 @@ public class WikiContentCrawler implements ContentCrawler {
 	private String extractMediaWikiMarkedupContent(JSONObject jsonResponse) {
 		String markedupContent = null;
 		JSONObject pages = (JSONObject) ((JSONObject) jsonResponse.get(WIKI_QUERY)).get(WIKI_PAGES);
+		@SuppressWarnings("unchecked")
 		Set<Object> keys = pages.keySet();
 		
 		for (Object key : keys) {
