@@ -46,12 +46,14 @@ public class ContentParserTest {
 	
 	@Test
 	public void testRunSimpleSentence() throws ContentParserException {
-		String parseMe = "Robert was big and tall.";
+		String parseMe = "Robert Barone is a big and tall man.";
 		cParser.parse(parseMe);
 	}
 	
 	@Test
 	public void testRunFromCassandra() throws ContentParserException, ParseException {
-		cParser.parse(new Date(1461542400000L));
+		Date two = new Date(1473984000000L);
+		// 2016-09-16 00:00:00.000000+0000 - Reduce date by one and then convert to milliseconds.
+		cParser.parse(two);
 	}
 }

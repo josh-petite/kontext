@@ -30,6 +30,9 @@ public class ContentParserImpl extends ContentParser {
 	@Override
 	public void parse(Date partition) {
 		List<Row> documents = docsRepo.read(partition).all();
+		if (documents.isEmpty())
+			return;
+		
 		new ContentParseAction(documents).invoke();
 	}
 
