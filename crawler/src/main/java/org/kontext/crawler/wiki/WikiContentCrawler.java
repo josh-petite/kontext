@@ -10,6 +10,8 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvlimit_value;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvprop;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvprop_value;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvparse;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvparse_value;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_titles;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_action;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_param_search;
@@ -135,6 +137,9 @@ public class WikiContentCrawler implements ContentCrawler {
 			String rvprop = propsRepo.read(wiki_query_rvprop);
 			String rvpropValue = propsRepo.read(wiki_query_rvprop_value);
 			
+			String rvexpandtemplates = propsRepo.read(wiki_query_rvparse);
+			String rvexpandtemplatesValue = propsRepo.read(wiki_query_rvparse_value);
+			
 			String title = propsRepo.read(wiki_query_titles);
 			
 			wikiSearchResource = client.target(uri);
@@ -149,6 +154,7 @@ public class WikiContentCrawler implements ContentCrawler {
 						.queryParam(rvlimit, rvlimitValue)
 						.queryParam(title, _nextTitle)
 						.queryParam(format, formatValue)
+						.queryParam(rvexpandtemplates, rvexpandtemplatesValue)
 						.request()
 						.accept(MediaType.APPLICATION_JSON)
 						.get();

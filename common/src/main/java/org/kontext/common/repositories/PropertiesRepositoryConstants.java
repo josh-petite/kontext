@@ -56,8 +56,13 @@ public class PropertiesRepositoryConstants {
 	
 	public static final String wiki_query_rvlimit = "wiki_query_rvlimit";
 	public static final String wiki_query_rvlimit_value = "wiki_query_rvlimit_value";
+	
 	public static final String wiki_query_format = "wiki_query_format";
 	public static final String wiki_query_format_value = "wiki_query_format_value";
-
+	
+	public static final String wiki_query_rvparse = "wiki_query_rvparse";
+	public static final String wiki_query_rvparse_value = "wiki_query_rvparse_value";
+	
 	public static final String wiki_query_titles = "wiki_query_titles";
+	
 }
