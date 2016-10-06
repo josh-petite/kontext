@@ -1,5 +1,9 @@
 package org.kontext.crawler.wiki;
 
+import java.util.Date;
+import java.util.List;
+
+import org.kontext.cassandra.documents.DocumentRepository;
 import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
@@ -16,16 +20,19 @@ private static PropertiesRepository propsRepo = PropertiesRepositoryImpl.getProp
 	
 	private DataSourceManager datasourceMgr;
 	private ContentCrawler crawler;
+	private DocumentRepository docRepo;
 	
 	@BeforeClass
 	public void beforeClass() {
 		datasourceMgr = new CassandraManager(propsRepo);
-		new DocumentRepositoryImpl(propsRepo, datasourceMgr);
+		docRepo = new DocumentRepositoryImpl(propsRepo, datasourceMgr);
 		crawler = ContentCrawler.getCrawler(new WikiCrawlable("Barack Obama"));
 	}
 	
 	@Test
 	public void testCrawler() throws ContentCrawlerException {
+		List<Date> partitions = docRepo.getAllPartitions();
+		docRepo.purge(partitions);
 		crawler.crawl();
 	}
 

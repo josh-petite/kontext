@@ -137,6 +137,15 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 
 	@Override
 	public void purge(Date partition) {
+		Statement purge = QueryBuilder.delete()
+										.from(documentsKeyspace, documentsTable)
+										.where()
+										.and(QueryBuilder.eq(create_date, partition));
+		session.execute(purge);
+	}
+	
+	@Override
+	public void purgeAll() {
 		Statement purge = QueryBuilder.truncate(documentsKeyspace, documentsTable);
 		session.execute(purge);
 	}
@@ -185,6 +194,14 @@ public class DocumentRepositoryImpl implements DocumentRepository {
 		}
 
 		return createDates;
+	}
+
+	public void purge(List<Date> partitions) {
+		Statement statement = QueryBuilder.delete()
+								.from(documentsKeyspace, documentsTable)
+								.where()
+								.and(QueryBuilder.in(create_date, partitions));
+		session.execute(statement);
 	}
 
 }

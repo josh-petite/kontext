@@ -1,6 +1,7 @@
 package org.kontext.parser;
 
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.kontext.cassandra.documents.DocumentRepository;
@@ -52,8 +53,11 @@ public class ContentParserTest {
 	
 	@Test
 	public void testRunFromCassandra() throws ContentParserException, ParseException {
-		Date two = new Date(1473984000000L);
 		// 2016-09-16 00:00:00.000000+0000 - Reduce date by one and then convert to milliseconds.
+		// 1474934400000
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date one = sdf.parse("2016-09-26");
+		Date two = new Date(1474934400000L);
 		cParser.parse(two);
 	}
 }

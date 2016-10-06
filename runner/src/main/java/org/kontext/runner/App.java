@@ -35,6 +35,5 @@ public class App {
         }
 
         documentRepository.read(null);
-        documentRepository.purge(null);
     }
 }

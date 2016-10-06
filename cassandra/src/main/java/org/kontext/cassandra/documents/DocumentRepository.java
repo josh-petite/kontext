@@ -29,7 +29,19 @@ public interface DocumentRepository {
      * 
      */
     void purge(Date partition);
-    
+
+	/**
+	 * Remove all partitions whose ids are passed
+	 * 
+	 * @param partitions
+	 */
+	void purge(List<Date> partitions);
+
+	/**
+	 * Truncate the documents table
+	 */
+	void purgeAll();
+	
     /**
      * Add documents to a partition
      * 
@@ -52,4 +64,10 @@ public interface DocumentRepository {
      * @return list of all partition identifiers
      */
     List<Date> getAllPartitions(); 
+    
+    /**
+	 * Just in case ...
+	 */
+	void finalize() throws Throwable;
+
 }

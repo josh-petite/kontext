@@ -15,6 +15,8 @@ import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_titles;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_action;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_search_param_search;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvexpandtemplates;
+import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_query_rvexpandtemplates_value;
 import static org.kontext.common.repositories.PropertiesRepositoryConstants.wiki_uri;
 
 import java.io.IOException;
@@ -29,10 +31,14 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.safety.Whitelist;
 import org.kontext.cassandra.documents.DocumentRepositoryImpl;
 import org.kontext.common.CassandraManager;
 import org.kontext.common.repositories.PropertiesRepository;
@@ -137,8 +143,11 @@ public class WikiContentCrawler implements ContentCrawler {
 			String rvprop = propsRepo.read(wiki_query_rvprop);
 			String rvpropValue = propsRepo.read(wiki_query_rvprop_value);
 			
-			String rvexpandtemplates = propsRepo.read(wiki_query_rvparse);
-			String rvexpandtemplatesValue = propsRepo.read(wiki_query_rvparse_value);
+			String rvparse = propsRepo.read(wiki_query_rvparse);
+			String rvparseValue = propsRepo.read(wiki_query_rvparse_value);
+			
+			String rvexpandtemplates = propsRepo.read(wiki_query_rvexpandtemplates);
+			String rvexpandtemplatesValue = propsRepo.read(wiki_query_rvexpandtemplates_value);
 			
 			String title = propsRepo.read(wiki_query_titles);
 			
@@ -154,6 +163,7 @@ public class WikiContentCrawler implements ContentCrawler {
 						.queryParam(rvlimit, rvlimitValue)
 						.queryParam(title, _nextTitle)
 						.queryParam(format, formatValue)
+						.queryParam(rvparse, rvparseValue)
 						.queryParam(rvexpandtemplates, rvexpandtemplatesValue)
 						.request()
 						.accept(MediaType.APPLICATION_JSON)
@@ -164,8 +174,8 @@ public class WikiContentCrawler implements ContentCrawler {
 				
 				String _jsonResponse = wikiSearchResponse.readEntity(String.class);
 				JSONObject jsonResponse = (JSONObject) parser.parse(_jsonResponse);
-				String contentWithMarkup = extractMediaWikiMarkedupContent(jsonResponse);
-				String plainContent = removeMediaWikiMarkup(contentWithMarkup);
+				String contentWithMarkup = extractMarkedupContent(jsonResponse);
+				String plainContent = removeHTMLMarkup(contentWithMarkup);
 				docRepo.storeDocument(null, plainContent, 1);
 			}
 
@@ -184,14 +194,29 @@ public class WikiContentCrawler implements ContentCrawler {
 		return stats;	
 	}
 
-	/*
+	/**
+	 * @deprecated
 	 * For the given text in MediaWiki markup, extract the corresponding plain text.
 	 */
+	@SuppressWarnings("unused")
 	private String removeMediaWikiMarkup(String contentWithMarkup) throws IOException {
 		String plainStr = wikiModel.render(new PlainTextConverter(), contentWithMarkup);
 		if (LOG.isDebugEnabled())
 			LOG.debug("Plain content - without markup " + plainStr);
 		return plainStr;
+	}
+	
+	private String removeHTMLMarkup(String markedUpContent) {
+		Document htmlDoc = Jsoup.parse(markedUpContent);
+		htmlDoc.outputSettings(new Document.OutputSettings().prettyPrint(false));
+		
+		String result = htmlDoc.html().replaceAll("\\\\n", "");
+	    result = Jsoup.clean(result, "", Whitelist.none(), new Document.OutputSettings().prettyPrint(false));
+	    result = StringEscapeUtils.unescapeHtml4(result);
+	    
+	    String regex = "\\b(https?|ftp|file|telnet|http|Unsure)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+	    result = result.replaceAll(regex, "");
+	    return result;
 	}
 
 	/*	JSON Structure:
@@ -209,7 +234,7 @@ public class WikiContentCrawler implements ContentCrawler {
 			            "contentmodel": "wikitext",
 			            "*": "content goes here"
 	 */
-	private String extractMediaWikiMarkedupContent(JSONObject jsonResponse) {
+	private String extractMarkedupContent(JSONObject jsonResponse) {
 		String markedupContent = null;
 		JSONObject pages = (JSONObject) ((JSONObject) jsonResponse.get(WIKI_QUERY)).get(WIKI_PAGES);
 		@SuppressWarnings("unchecked")

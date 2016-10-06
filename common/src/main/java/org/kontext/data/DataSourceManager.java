@@ -17,4 +17,5 @@ public interface DataSourceManager {
 	 * @param closeable
 	 */
 	void close(Closeable closeable);
+	
 }

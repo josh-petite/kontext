@@ -63,6 +63,9 @@ public class PropertiesRepositoryConstants {
 	public static final String wiki_query_rvparse = "wiki_query_rvparse";
 	public static final String wiki_query_rvparse_value = "wiki_query_rvparse_value";
 	
+	public static final String wiki_query_rvexpandtemplates = "wiki_query_rvexpandtemplates";
+	public static final String wiki_query_rvexpandtemplates_value = "wiki_query_rvexpandtemplates_value";
+	
 	public static final String wiki_query_titles = "wiki_query_titles";
 	
 }
